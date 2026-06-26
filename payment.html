@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Join TAN — Transaction Action Network</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+      background: #0a0a0a;
+      color: rgba(255,255,255,0.85);
+    }
+    .card {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+    }
+    .card-solid {
+      background: #181818;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#d27d2d",
+            "on-primary-container": "#452200",
+            "primary": "#904d00",
+            "on-primary": "#ffffff",
+          },
+          fontFamily: {
+            "headline": ["Sora"],
+            "body": ["Inter"],
+            "mono": ["JetBrains Mono"],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <header class="border-b border-white/5 bg-[#0a0a0a]/90">
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-headline font-bold text-sm tracking-tighter text-white uppercase no-underline">TAN</a>
+      <a href="index.html" class="text-white/40 hover:text-white transition-colors no-underline font-mono text-[10px] uppercase tracking-[0.1em]">Back to Home</a>
+    </div>
+  </header>
+
+  <main class="py-16 md:py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="font-mono text-[9px] uppercase tracking-[0.15em] text-[#d27d2d] border border-[#d27d2d]/20 px-3 py-1.5" style="border-radius:4px">Network Access</span>
+        <h1 class="font-headline text-[clamp(28px,3.5vw,40px)] font-bold tracking-[-0.02em] text-white mt-6 mb-4">Complete Your Access Request</h1>
+        <p class="text-white/50 text-[14px] max-w-lg mx-auto leading-relaxed">A small commitment to maintain signal quality. The lowest-friction way inside.</p>
+      </div>
+
+      <div class="max-w-md mx-auto">
+        <div class="card p-8 mb-4">
+          <div class="flex items-center justify-between pb-6 border-b border-white/5 mb-6">
+            <span class="font-mono text-[10px] uppercase text-white/40 tracking-[0.1em]">Network Access Fee</span>
+            <div class="flex items-baseline gap-1">
+              <span class="font-headline text-3xl font-bold text-white tracking-[-0.03em]">$2.00</span>
+              <span class="text-white/30 font-mono text-[10px] uppercase">/mo</span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Full Name</label>
+              <input type="text" class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px" placeholder="Enter your name"/>
+            </div>
+            <div>
+              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Email Address</label>
+              <input type="email" class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px" placeholder="Enter your email"/>
+            </div>
+            <div>
+              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Desired Track</label>
+              <select class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px">
+                <option value="operator">Operator</option>
+                <option value="acquisition">Personal Acquisition</option>
+                <option value="capital">Capital</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6 mb-4">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#d27d2d] text-lg mt-0.5">lock</span>
+            <div>
+              <h4 class="text-white text-[12px] font-medium mb-1">Secure Transaction</h4>
+              <p class="text-white/40 text-[11px] leading-relaxed">Your information is encrypted and processed securely. We do not store payment details.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="mailto:foreignaffairsllc2017@gmail.com?subject=TAN%20Network%20Access%20Request&body=Name%3A%0AEmail%3A%0ATrack%3A%20(Operator%20%2F%20Personal%20Acquisition%20%2F%20Capital)%0A%0AI'd%20like%20to%20request%20access%20to%20TAN." class="block w-full bg-primary-container text-on-primary-container py-4 font-mono text-[10px] uppercase tracking-[0.15em] font-medium text-center no-underline hover:brightness-110 transition-all" style="border-radius:4px">Submit Access Request</a>
+
+        <p class="text-center mt-6 text-white/20 font-mono text-[9px] uppercase tracking-[0.1em]">Secure TLS 1.3 Encrypted Connection</p>
+      </div>
+
+      <div class="mt-16 text-center">
+        <div class="card-solid inline-flex items-center gap-6 px-6 py-4">
+          <div class="text-center">
+            <div class="text-white font-headline font-bold text-sm">1,200+</div>
+            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Members</div>
+          </div>
+          <div class="w-px h-8 bg-white/5"></div>
+          <div class="text-center">
+            <div class="text-white font-headline font-bold text-sm">120s</div>
+            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Onboarding</div>
+          </div>
+          <div class="w-px h-8 bg-white/5"></div>
+          <div class="text-center">
+            <div class="text-white font-headline font-bold text-sm">99.9%</div>
+            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Uptime</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-white/5 py-8">
+    <div class="max-w-3xl mx-auto px-6 text-center text-white/15 text-[10px] font-mono">&copy; 2026 Transaction Action Network. All rights reserved.</div>
+  </footer>
+</body>
+</html>
