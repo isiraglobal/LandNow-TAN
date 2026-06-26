@@ -15,9 +15,6 @@
       inset: 0;
       z-index: 1000;
       background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     #intro-video {
       width: 100vw;
@@ -25,10 +22,20 @@
       object-fit: cover;
     }
     #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 1001;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 20px;
+      background: #000;
+      transition: opacity 0.6s ease;
+    }
+    #loader.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
     .spinner {
       width: 28px;
@@ -50,7 +57,7 @@
       position: fixed;
       bottom: 32px;
       right: 32px;
-      z-index: 1001;
+      z-index: 1002;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.4);
@@ -71,13 +78,13 @@
 </head>
 <body>
 <div id="splash">
-  <video id="intro-video" muted playsinline preload="auto" style="display:none">
-    <source src="Earth Zoom In Realistic Clouds With Alpha Matte_1080p.mp4" type="video/mp4">
+  <video id="intro-video" muted playsinline preload="auto"
+    src="Earth Zoom In Realistic Clouds With Alpha Matte_1080p.mp4">
   </video>
-  <div id="loader">
-    <div class="spinner"></div>
-    <span id="loader-text">Buffering</span>
-  </div>
+</div>
+<div id="loader">
+  <div class="spinner"></div>
+  <span id="loader-text">Buffering</span>
 </div>
 <button id="skip-btn">Skip</button>
 
@@ -85,7 +92,6 @@
   (function() {
     const video = document.getElementById('intro-video');
     const loader = document.getElementById('loader');
-    const loaderText = document.getElementById('loader-text');
     const skipBtn = document.getElementById('skip-btn');
 
     function goToOnboard() {
@@ -98,21 +104,22 @@
       return;
     }
 
-    function showAndPlay() {
-      loader.style.display = 'none';
-      video.style.display = 'block';
+    skipBtn.style.display = 'block';
+
+    function playVideo() {
+      loader.classList.add('hidden');
       video.playbackRate = 1.3;
       video.play().catch(goToOnboard);
-      skipBtn.style.display = 'block';
     }
 
-    video.addEventListener('canplaythrough', showAndPlay, { once: true });
+    video.addEventListener('loadeddata', playVideo, { once: true });
+    video.addEventListener('canplaythrough', playVideo, { once: true });
+
+    if (video.readyState >= 3) playVideo();
 
     video.addEventListener('ended', goToOnboard);
 
-    setTimeout(() => {
-      if (video.style.display === 'none') showAndPlay();
-    }, 8000);
+    setTimeout(playVideo, 6000);
 
     skipBtn.addEventListener('click', goToOnboard);
   })();
