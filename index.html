@@ -116,12 +116,10 @@
 <body>
 
 <div id="splash">
-  <video id="intro-video" muted playsinline preload="auto" style="display:none">
-    <source src="Earth Zoom In Realistic Clouds With Alpha Matte_1080p.mp4" type="video/mp4">
-  </video>
+  <video id="intro-video" muted playsinline style="display:none"></video>
   <div id="loader" class="flex flex-col items-center gap-6">
     <div class="w-8 h-8 rounded-full border border-white/20 border-t-white animate-spin"></div>
-    <span class="font-mono text-[10px] uppercase text-white/40 tracking-[0.2em]">Establishing Secure Connection</span>
+    <span id="loader-text" class="font-mono text-[10px] uppercase text-white/40 tracking-[0.2em]">Buffering</span>
   </div>
 </div>
 
@@ -384,31 +382,52 @@
 </div>
 
 <script>
-  const video = document.getElementById('intro-video');
-  const splash = document.getElementById('splash');
-  const loader = document.getElementById('loader');
-  const mainContent = document.getElementById('main-content');
+  (function() {
+    const video = document.getElementById('intro-video');
+    const splash = document.getElementById('splash');
+    const loader = document.getElementById('loader');
+    const loaderText = document.getElementById('loader-text');
+    const mainContent = document.getElementById('main-content');
 
-  let ready = false;
+    function showContent() {
+      splash.classList.add('hidden');
+      mainContent.classList.add('visible');
+    }
 
-  function startVideo() {
-    if (ready) return;
-    ready = true;
-    video.style.display = 'block';
-    loader.style.display = 'none';
-    video.playbackRate = 2.5;
-    video.play().catch(() => {});
-  }
+    if (sessionStorage.getItem('tan_intro_played')) {
+      showContent();
+      return;
+    }
 
-  video.addEventListener('canplaythrough', startVideo);
-  video.addEventListener('loadeddata', () => { if (video.readyState >= 4) startVideo(); });
-  if (video.readyState >= 4) startVideo();
-  setTimeout(() => { if (!ready) startVideo(); }, 8000);
+    let blobUrl = null;
 
-  video.addEventListener('ended', () => {
-    splash.classList.add('hidden');
-    mainContent.classList.add('visible');
-  });
+    function playVideo() {
+      loaderText.textContent = 'Initializing';
+      video.src = blobUrl || 'Earth Zoom In Realistic Clouds With Alpha Matte_1080p.mp4';
+      video.style.display = 'block';
+      loader.style.display = 'none';
+      video.playbackRate = 1.3;
+      video.play().catch(() => showContent());
+    }
+
+    function onEnded() {
+      sessionStorage.setItem('tan_intro_played', '1');
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+      showContent();
+    }
+
+    video.addEventListener('ended', onEnded);
+
+    fetch('Earth Zoom In Realistic Clouds With Alpha Matte_1080p.mp4')
+      .then(r => r.blob())
+      .then(blob => {
+        blobUrl = URL.createObjectURL(blob);
+        playVideo();
+      })
+      .catch(() => {
+        playVideo();
+      });
+  })();
 </script>
 </body>
 </html>
