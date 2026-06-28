@@ -3,7 +3,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email } = req.body || {};
+  const { name, email, experience } = req.body || {};
 
   if (!name || !email) {
     return res.status(400).json({ error: 'Name and email are required.' });
@@ -23,6 +23,7 @@ module.exports = async (req, res) => {
       fields: [
         { name: 'Name', value: name, inline: true },
         { name: 'Email', value: email, inline: true },
+        { name: 'Experience', value: experience || 'Not specified', inline: true },
         { name: 'Submitted', value: new Date().toUTCString(), inline: false }
       ],
       footer: { text: 'LandNow Entry Form' }
