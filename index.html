@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-<script src="https://js.stripe.com/v3/"></script>
+
 <script>
     tailwind.config = {
       theme: {
@@ -38,7 +38,7 @@
       transition: opacity 0.8s ease;
     }
     #splash.hidden { opacity: 0; pointer-events: none; }
-    #splash video { width: 100vw; height: 100vh; object-fit: cover; }
+    #splash video { width: 100%; height: 100%; object-fit: cover; }
     #loader {
       position: fixed; inset: 0; z-index: 1001;
       display: flex; align-items: center; justify-content: center;
@@ -497,25 +497,34 @@
       <span class="text-ln-brown/50 text-sm block mt-2">one-time payment</span>
     </div>
   </div>
-  <div class="max-w-md mx-auto reveal">
-    <div class="bg-ln-light-tan/40 p-8 mb-8">
-      <ul class="space-y-4">
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Private Community Access</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Proprietary Frameworks</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Live Educational Sessions</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Investor Network</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Due Diligence Resources</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Market Intelligence</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Exclusive Discussions</li>
-        <li class="flex items-start gap-3 text-sm"><span class="text-ln-tan mt-0.5">✓</span> Member Opportunities</li>
-      </ul>
+  <div class="max-w-lg mx-auto grid md:grid-cols-2 gap-8 reveal">
+    <div class="bg-ln-light-tan/40 p-8">
+      <h3 class="text-base serif-font mb-4">Get Started</h3>
+      <p class="text-xs text-ln-brown/70 leading-relaxed mb-6">Submit your name and email and you&rsquo;ll be redirected to complete your membership on Whop.</p>
+      <form id="entry-form" class="space-y-4">
+        <div>
+          <label for="entry-name" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Name</label>
+          <input type="text" id="entry-name" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="Your full name"/>
+        </div>
+        <div>
+          <label for="entry-email" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Email</label>
+          <input type="email" id="entry-email" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="you@example.com"/>
+        </div>
+        <button type="submit" id="entry-submit" class="w-full bg-ln-brown text-white py-3 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-ln-dark-tan transition-all">
+          Submit &amp; Continue
+        </button>
+        <div id="entry-message" class="text-center text-xs mt-2 hidden"></div>
+      </form>
     </div>
-    <button id="checkout-button" class="w-full bg-ln-brown text-white py-4 text-sm tracking-widest uppercase flex items-center justify-center gap-3 hover:bg-ln-dark-tan transition-colors">
-      Join the Network
-      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-    </button>
-    <p class="text-center text-[10px] uppercase tracking-[0.2em] text-ln-brown/40 mt-6">Secure payment via Stripe</p>
-    <div id="payment-message" class="text-center text-xs mt-4 hidden"></div>
+    <div class="bg-ln-light-tan/40 p-8 flex flex-col justify-between">
+      <div>
+        <h3 class="text-base serif-font mb-4">Already have access?</h3>
+        <p class="text-xs text-ln-brown/70 leading-relaxed mb-6">If you already have a Whop account, log in directly to access the community.</p>
+      </div>
+      <a href="https://whop.com/joined/coastal-flip-marine/" target="_blank" rel="noopener noreferrer" class="block w-full bg-ln-tan text-ln-brown py-3 text-[10px] uppercase tracking-[0.2em] font-medium text-center hover:bg-ln-dark-tan hover:text-white transition-all">
+        Go to Whop
+      </a>
+    </div>
   </div>
 </section>
 
@@ -548,7 +557,7 @@
     </div>
   </div>
   <div class="w-full overflow-hidden pb-0 -mb-[2px] leading-none select-none pointer-events-none">
-    <h2 class="text-[22vw] md:text-[16vw] lg:text-[14vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.7] select-none">LANDNOW</h2>
+    <h2 class="text-[13vw] md:text-[14vw] lg:text-[14vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.7] select-none">LANDNOW</h2>
   </div>
   <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-auto max-w-[90vw]">
     <div class="bg-ln-brown/90 backdrop-blur-xl border border-white/20 text-white px-6 py-3 flex items-center gap-4 shadow-2xl">
@@ -598,10 +607,24 @@
       video.addEventListener('ended', () => { clearTimeout(fallbackTimer); onVideoEnded(); });
       video.addEventListener('error', () => { clearTimeout(fallbackTimer); showSite(); });
       setTimeout(() => loader.classList.add('hidden'), 2000);
-      video.addEventListener('canplay', () => {
+
+      let started = false;
+      const startVideo = () => {
+        if (started) return;
+        started = true;
         video.playbackRate = 1.3;
-        video.play().catch(() => showSite());
-      }, { once: true });
+        video.play().catch((err) => {
+          console.warn("Video playback failed/blocked:", err);
+          showSite();
+        });
+      };
+
+      video.addEventListener('canplay', startVideo, { once: true });
+      video.addEventListener('loadeddata', startVideo, { once: true });
+
+      if (video.readyState >= 3) {
+        startVideo();
+      }
     }
   })();
 
@@ -620,7 +643,6 @@
     function goTo(index) {
       current = index;
       track.style.transform = `translateX(-${current * 100}%)`;
-      updateDots();
       resetAutoplay();
     }
 
@@ -643,43 +665,42 @@
   }
 
   (function() {
-    const stripe = Stripe('pk_test_XXXXXXXXXXXXXXXXXXXXXXXX');
-    const btn = document.getElementById('checkout-button');
-    const msg = document.getElementById('payment-message');
+    const form = document.getElementById('entry-form');
+    const submitBtn = document.getElementById('entry-submit');
+    const msg = document.getElementById('entry-message');
 
-    if (btn) {
-      btn.addEventListener('click', async () => {
-        btn.disabled = true;
-        btn.textContent = 'Processing...';
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
         msg.classList.add('hidden');
 
-        try {
-          const response = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          const session = await response.json();
+        const name = document.getElementById('entry-name').value.trim();
+        const email = document.getElementById('entry-email').value.trim();
 
-          if (session.error) {
-            msg.textContent = session.error;
+        try {
+          const res = await fetch('/api/submit-entry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email })
+          });
+          const data = await res.json();
+
+          if (data.error) {
+            msg.textContent = data.error;
             msg.classList.remove('hidden');
-            btn.disabled = false;
-            btn.textContent = 'Join the Network';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit & Continue';
             return;
           }
 
-          const result = await stripe.redirectToCheckout({ sessionId: session.id });
-          if (result.error) {
-            msg.textContent = result.error.message;
-            msg.classList.remove('hidden');
-            btn.disabled = false;
-            btn.textContent = 'Join the Network';
-          }
-        } catch (e) {
-          msg.textContent = 'Unable to connect. Please try again.';
+          window.location.href = 'https://whop.com/joined/coastal-flip-marine/';
+        } catch (err) {
+          msg.textContent = 'Unable to submit. Please try again.';
           msg.classList.remove('hidden');
-          btn.disabled = false;
-          btn.textContent = 'Join the Network';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit & Continue';
         }
       });
     }
