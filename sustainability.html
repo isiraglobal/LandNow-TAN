@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sustainability — LandNow</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'ln-brown': '#3d372e', 'ln-tan': '#b5925a', 'ln-cream': '#e5e0d4',
+            'ln-dark-tan': '#8c7046', 'ln-light-tan': '#d6c9b1',
+          },
+          fontFamily: { serif: ['"Libre Baskerville"', 'serif'], sans: ['Outfit', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+<style>
+    h1, h2, h3, .serif-font { font-family: 'Libre Baskerville', serif; letter-spacing: -0.02em; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    @keyframes ken-burns {
+      0% { transform: scale(1) translateX(0); }
+      50% { transform: scale(1.08) translateX(-1%); }
+      100% { transform: scale(1) translateX(0); }
+    }
+    .ken-burns { animation: ken-burns 20s ease-in-out infinite; }
+    @keyframes float-subtle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float-subtle { animation: float-subtle 4s ease-in-out infinite; }
+    @keyframes drift-slow {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+    .drift-slow { animation: drift-slow 12s ease-in-out infinite; }
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+    .pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-left.is-visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal-right.is-visible { opacity: 1; transform: translateX(0); }
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+    @keyframes text-marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .text-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: text-marquee 30s linear infinite;
+    }
+    .text-marquee-wrap {
+      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+  </style>
+</head>
+<body class="bg-ln-cream text-ln-brown font-sans antialiased overflow-x-hidden">
+
+<nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center mix-blend-difference text-white">
+  <a href="index.html" class="text-sm font-bold tracking-widest uppercase">LandNow</a>
+  <a href="index.html" class="text-[10px] uppercase tracking-[0.2em] border border-white/30 px-5 py-2 hover:bg-white/10 transition-colors">Back to Home</a>
+</nav>
+
+<section class="min-h-[60vh] flex items-center relative overflow-hidden" style="background:#2b261f;">
+  <div class="absolute inset-0 opacity-20 mix-blend-overlay">
+    <img alt="" class="w-full h-full object-cover ken-burns" src="https://images.unsplash.com/photo-1470071459604-7b8ec44ffd0e?w=1600&q=80"/>
+  </div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6 py-32 text-center text-white">
+    <div class="mb-6">
+      <span class="bg-ln-tan/20 text-ln-tan px-4 py-2 text-[10px] uppercase tracking-[0.15em] pulse-soft">Sustainability</span>
+    </div>
+    <h1 class="text-4xl md:text-6xl lg:text-7xl serif-font leading-tight mb-6 float-subtle">Stewardship is the strategy.</h1>
+    <p class="text-lg opacity-70 max-w-2xl mx-auto">How responsible land management creates long-term value for members and the communities they operate in.</p>
+  </div>
+</section>
+
+<section class="py-20 px-6 md:px-20">
+  <div class="max-w-3xl mx-auto space-y-12 text-sm leading-relaxed text-ln-brown/80">
+    <div class="reveal">
+      <h2 class="text-2xl md:text-3xl serif-font mb-4 text-ln-brown">Conservation as an asset class.</h2>
+      <p>Conservation easements, regenerative agriculture transitions, and wetland mitigation banking are not just ethical choices — they are increasingly valuable financial instruments. The federal and state governments pay for ecosystem services. Carbon markets are pricing soil health. Water conservation credits trade in active markets.</p>
+      <p class="mt-4">LandNow members are educated on these mechanisms because they directly affect acquisition pricing, holding costs, and exit strategies. A piece of land with a conservation easement is often cheaper to acquire, cheaper to hold, and easier to exit than one without.</p>
+    </div>
+    <div class="reveal delay-1">
+      <h2 class="text-2xl md:text-3xl serif-font mb-4 text-ln-brown">Long-term thinking is the only thinking.</h2>
+      <p>The members of this network do not flip. They build. The time horizon for a land and water position is measured in decades, not quarters. That means the stewardship approach matters — not just for the land, but for the social license to operate in the communities where these assets sit.</p>
+      <p class="mt-4">Our community shares best practices on rotational grazing, water-efficient irrigation, soil carbon sequestration, and working-with-natural-systems approaches that preserve — and often enhance — the underlying asset.</p>
+    </div>
+    <div class="reveal delay-2">
+      <h2 class="text-2xl md:text-3xl serif-font mb-4 text-ln-brown">The economic case for stewardship.</h2>
+      <p>A degraded piece of land loses value in every dimension: production, water rights retention, regulatory compliance, and exit liquidity. A well-stewarded property compounds in all of them. The data is clear that conservation-minded management produces superior risk-adjusted returns over a 10+ year horizon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 px-6 bg-ln-brown text-ln-cream overflow-hidden">
+  <div class="text-marquee-wrap mb-8">
+    <div class="text-marquee-track gap-8">
+      <span class="text-3xl md:text-4xl serif-font flex-shrink-0">Build something that lasts.</span>
+      <span class="text-3xl md:text-4xl serif-font flex-shrink-0 text-ln-tan/60">Stewardship compounds. Degradation doesn't.</span>
+      <span class="text-3xl md:text-4xl serif-font flex-shrink-0">Build something that lasts.</span>
+      <span class="text-3xl md:text-4xl serif-font flex-shrink-0 text-ln-tan/60">Stewardship compounds. Degradation doesn't.</span>
+    </div>
+  </div>
+  <div class="text-center">
+    <a href="index.html#membership" class="inline-flex bg-ln-tan text-ln-brown px-8 py-4 text-sm font-medium hover:bg-ln-dark-tan hover:text-white transition-all">Join the Network</a>
+  </div>
+</section>
+
+<footer class="bg-ln-brown text-ln-cream pt-24 pb-0 relative overflow-hidden">
+  <div class="px-6 md:px-20 relative z-10">
+    <div class="flex flex-col lg:flex-row justify-between gap-16 mb-12">
+      <div class="lg:w-2/3">
+        <ul class="space-y-4 text-xl md:text-2xl lg:text-3xl serif-font">
+          <li><a href="index.html" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Home</a></li>
+          <li><a href="index.html#benefits" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Benefits</a></li>
+          <li><a href="index.html#how-it-works" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">How It Works</a></li>
+          <li><a href="index.html#faq" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">FAQ</a></li>
+          <li><a href="index.html#membership" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Membership</a></li>
+        </ul>
+        <p class="text-xs opacity-50 mt-8 max-w-md">Private Professional Community. Land &amp; Water Rights &bull; Strategic Acquisitions &bull; Investment &bull; Education.</p>
+      </div>
+      <div class="lg:w-1/4 flex flex-col justify-between">
+        <div class="flex gap-4 mb-10">
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="LinkedIn"><span class="text-xs font-bold">in</span></a>
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="X"><span class="text-xs font-bold">x</span></a>
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="Instagram"><span class="text-xs font-bold">ig</span></a>
+        </div>
+        <div class="space-y-2 text-xs opacity-60">
+          <p><a class="hover:opacity-100" href="terms.html">Terms of Service</a></p>
+          <p><a class="hover:opacity-100" href="privacy.html">Privacy Policy</a></p>
+          <p><a class="hover:opacity-100" href="mailto:foreignaffairsllc2017@gmail.com">Contact</a></p>
+          <div class="pt-6"><p>&copy; 2026. All Rights Reserved.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full overflow-hidden pb-0 -mb-[2px] leading-none select-none pointer-events-none">
+    <h2 class="text-[22vw] md:text-[16vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.75] drift-slow">LANDNOW</h2>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  })();
+</script>
+</body>
+</html>

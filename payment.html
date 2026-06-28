@@ -1,136 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Apply — LandNow</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      margin: 0;
-      background: #0a0a0a;
-      color: rgba(255,255,255,0.85);
-    }
-    .card {
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px;
-    }
-    .card-solid {
-      background: #181818;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 6px;
-    }
-  </style>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Apply — LandNow</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            "primary-container": "#d27d2d",
-            "on-primary-container": "#452200",
-            "primary": "#904d00",
-            "on-primary": "#ffffff",
+            'ln-brown': '#3d372e',
+            'ln-tan': '#b5925a',
+            'ln-cream': '#e5e0d4',
+            'ln-dark-tan': '#8c7046',
+            'ln-light-tan': '#d6c9b1',
           },
           fontFamily: {
-            "headline": ["Sora"],
-            "body": ["Inter"],
-            "mono": ["JetBrains Mono"],
+            serif: ['"Libre Baskerville"', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
           },
         }
       }
     }
   </script>
+<style>
+    h1, h2, h3, .serif-font { font-family: 'Libre Baskerville', serif; letter-spacing: -0.02em; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    @keyframes drift-slow {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+    .drift-slow { animation: drift-slow 12s ease-in-out infinite; }
+    @keyframes float-subtle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float-subtle { animation: float-subtle 4s ease-in-out infinite; }
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+    .pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+  </style>
 </head>
-<body>
-  <header class="border-b border-white/5 bg-[#0a0a0a]/90">
-    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="index.html" style="font-family:Sora,sans-serif;font-weight:700;font-size:16px;color:#F0EDE8;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">LANDNOW</a>
-      <a href="index.html" class="text-white/40 hover:text-white transition-colors no-underline font-mono text-[10px] uppercase tracking-[0.1em]">Back to Home</a>
+<body class="bg-ln-cream text-ln-brown font-sans antialiased">
+
+<nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-ln-cream/90 backdrop-blur-md">
+  <a href="index.html" class="text-sm font-bold tracking-widest uppercase">LandNow</a>
+  <a href="index.html" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 hover:text-ln-brown transition-colors">Back to Home</a>
+</nav>
+
+<main class="py-24 px-6 md:px-20">
+  <div class="max-w-xl mx-auto">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center mb-6">
+        <span class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">Access</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl serif-font mb-4 float-subtle">Complete Your Request</h1>
+      <p class="text-ln-brown/70 text-sm max-w-md mx-auto">A small commitment to maintain signal quality. The lowest-friction way inside.</p>
     </div>
-  </header>
 
-  <main class="py-16 md:py-24">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <span class="font-mono text-[9px] uppercase tracking-[0.15em] text-[#d27d2d] border border-[#d27d2d]/20 px-3 py-1.5" style="border-radius:4px">Network Access</span>
-        <h1 class="font-headline text-[clamp(28px,3.5vw,40px)] font-bold tracking-[-0.02em] text-white mt-6 mb-4">Complete Your Access Request</h1>
-        <p class="text-white/50 text-[14px] max-w-lg mx-auto leading-relaxed">A small commitment to maintain signal quality. The lowest-friction way inside.</p>
+    <div class="bg-ln-light-tan/40 p-8 mb-6 reveal">
+      <div class="flex items-center justify-between pb-6 border-b border-ln-brown/10 mb-6">
+        <span class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50">Network Access Fee</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-3xl serif-font">$2.00</span>
+          <span class="text-ln-brown/40 text-[10px] uppercase">/mo</span>
+        </div>
       </div>
 
-      <div class="max-w-md mx-auto">
-        <div class="card p-8 mb-4">
-          <div class="flex items-center justify-between pb-6 border-b border-white/5 mb-6">
-            <span class="font-mono text-[10px] uppercase text-white/40 tracking-[0.1em]">Network Access Fee</span>
-            <div class="flex items-baseline gap-1">
-              <span class="font-headline text-3xl font-bold text-white tracking-[-0.03em]">$2.00</span>
-              <span class="text-white/30 font-mono text-[10px] uppercase">/mo</span>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Full Name</label>
-              <input type="text" class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px" placeholder="Enter your name"/>
-            </div>
-            <div>
-              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Email Address</label>
-              <input type="email" class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px" placeholder="Enter your email"/>
-            </div>
-            <div>
-              <label class="font-mono text-[9px] uppercase text-white/40 tracking-[0.1em] block mb-1.5">Desired Track</label>
-              <select class="w-full bg-[#181818] border border-white/10 px-4 py-3 text-white text-[13px] outline-none focus:border-[#d27d2d] transition-colors" style="border-radius:4px">
-                <option value="operator">Operator</option>
-                <option value="acquisition">Personal Acquisition</option>
-                <option value="capital">Capital</option>
-              </select>
-            </div>
-          </div>
+      <form class="space-y-6" onsubmit="event.preventDefault();window.location='mailto:foreignaffairsllc2017@gmail.com?subject=LandNow%20Payment%20Request&body='+encodeURIComponent('Name: '+document.getElementById('f-name').value+'\nEmail: '+document.getElementById('f-email').value+'\nTrack: '+document.getElementById('f-track').value)">
+        <div>
+          <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Full Name</label>
+          <input type="text" id="f-name" placeholder="Your full name" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
         </div>
-
-        <div class="card p-6 mb-4">
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-[#d27d2d] text-lg mt-0.5">lock</span>
-            <div>
-              <h4 class="text-white text-[12px] font-medium mb-1">Secure Transaction</h4>
-              <p class="text-white/40 text-[11px] leading-relaxed">Your information is encrypted and processed securely. We do not store payment details.</p>
-            </div>
-          </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Email Address</label>
+          <input type="email" id="f-email" placeholder="name@company.com" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
         </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Desired Track</label>
+          <select id="f-track" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm">
+            <option value="">Select...</option>
+            <option>Operator</option>
+            <option>Capital</option>
+            <option>Personal Acquisition</option>
+          </select>
+        </div>
+      </form>
+    </div>
 
-        <a href="mailto:foreignaffairsllc2017@gmail.com?subject=TAN%20Network%20Access%20Request&body=Name%3A%0AEmail%3A%0ATrack%3A%20(Operator%20%2F%20Personal%20Acquisition%20%2F%20Capital)%0A%0AI'd%20like%20to%20request%20access%20to%20TAN." class="block w-full bg-primary-container text-on-primary-container py-4 font-mono text-[10px] uppercase tracking-[0.15em] font-medium text-center no-underline hover:brightness-110 transition-all" style="border-radius:4px">Submit Access Request</a>
-
-        <p class="text-center mt-6 text-white/20 font-mono text-[9px] uppercase tracking-[0.1em]">Secure TLS 1.3 Encrypted Connection</p>
-      </div>
-
-      <div class="mt-16 text-center">
-        <div class="card-solid inline-flex items-center gap-6 px-6 py-4">
-          <div class="text-center">
-            <div class="text-white font-headline font-bold text-sm">1,200+</div>
-            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Members</div>
-          </div>
-          <div class="w-px h-8 bg-white/5"></div>
-          <div class="text-center">
-            <div class="text-white font-headline font-bold text-sm">120s</div>
-            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Onboarding</div>
-          </div>
-          <div class="w-px h-8 bg-white/5"></div>
-          <div class="text-center">
-            <div class="text-white font-headline font-bold text-sm">99.9%</div>
-            <div class="text-white/30 font-mono text-[8px] uppercase tracking-[0.1em] mt-0.5">Uptime</div>
-          </div>
+    <div class="bg-ln-light-tan/40 p-6 mb-6 reveal delay-1">
+      <div class="flex items-start gap-3">
+        <span class="text-ln-tan text-lg">*</span>
+        <div>
+          <h4 class="text-sm mb-1">Transaction</h4>
+          <p class="text-xs text-ln-brown/60">Your information is encrypted and processed securely. We do not store payment details.</p>
         </div>
       </div>
     </div>
-  </main>
 
-  <footer class="border-t border-white/5 py-8">
-    <div class="max-w-3xl mx-auto px-6 text-center text-white/15 text-[10px] font-mono">&copy; 2026 Transaction Action Network. All rights reserved.</div>
-  </footer>
+    <a href="mailto:foreignaffairsllc2017@gmail.com?subject=LandNow%20Access%20Request&body=Name%3A%0AEmail%3A%0ATrack%3A" class="block w-full bg-ln-brown text-white py-4 text-sm uppercase tracking-[0.2em] text-center hover:bg-ln-dark-tan transition-all reveal delay-2">Submit Access Request</a>
+
+    <p class="text-center mt-6 text-[10px] uppercase tracking-[0.2em] text-ln-brown/30">Secure connection</p>
+
+    <div class="mt-16 flex justify-center">
+      <div class="inline-flex items-center gap-6 px-6 py-4 bg-ln-light-tan/40">
+        <div class="text-center">
+          <div class="serif-font text-sm font-bold">1,200+</div>
+          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Members</div>
+        </div>
+        <div class="w-px h-8 bg-ln-brown/10"></div>
+        <div class="text-center">
+          <div class="serif-font text-sm font-bold">120s</div>
+          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Onboarding</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="bg-ln-brown text-ln-cream pt-16 pb-0 relative overflow-hidden">
+  <div class="px-6 md:px-20 relative z-10 text-center">
+    <p class="text-xs opacity-50">&copy; 2025 LandNow. Private Membership.</p>
+  </div>
+  <div class="w-full overflow-hidden pb-0 -mb-1 leading-none select-none pointer-events-none mt-8">
+    <h2 class="text-[22vw] md:text-[16vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.75] drift-slow">LANDNOW</h2>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  })();
+</script>
 </body>
 </html>

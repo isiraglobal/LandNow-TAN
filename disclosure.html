@@ -1,55 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Disclosure — LandNow</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      margin: 0;
-      background: #0a0a0a;
-      color: rgba(255,255,255,0.85);
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Disclosure — LandNow</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'ln-brown': '#3d372e',
+            'ln-tan': '#b5925a',
+            'ln-cream': '#e5e0d4',
+            'ln-dark-tan': '#8c7046',
+            'ln-light-tan': '#d6c9b1',
+          },
+          fontFamily: {
+            serif: ['"Libre Baskerville"', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+          },
+        }
+      }
     }
-    .card {
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px;
+  </script>
+<style>
+    h1, h2, h3, .serif-font { font-family: 'Libre Baskerville', serif; letter-spacing: -0.02em; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    @keyframes drift-slow {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
     }
+    .drift-slow { animation: drift-slow 12s ease-in-out infinite; }
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+    .pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
-<body class="font-sans antialiased">
-  <div class="max-w-3xl mx-auto px-6 py-16">
-    <a href="index.html" class="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors no-underline text-sm mb-12">
-      <span class="material-symbols-outlined text-lg">arrow_back</span>
-      Back to TAN
-    </a>
-    <div class="card p-8 md:p-12">
-      <h1 class="font-headline text-3xl font-bold text-white mb-2">Disclosure</h1>
-      <p class="text-white/30 text-sm font-mono mb-8">Last updated: June 2026</p>
-      <div class="space-y-6 text-white/60 text-sm leading-relaxed">
-        <p>Transaction Action Network ("TAN") is committed to transparency. This disclosure outlines the nature of the network and important notices for prospective members.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">1. Nature of the Network</h2>
-        <p>TAN is a private membership network for professionals, builders, and operators. It is not an investment club, investment advisory service, or financial institution. TAN does not provide financial advice, investment recommendations, or legal counsel.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">2. No Guarantee of Returns</h2>
-        <p>Membership in TAN does not guarantee any specific financial results, business outcomes, career advancement, or investment returns. Network participation is for professional development and connection purposes only.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">3. Not a Financial Service</h2>
-        <p>TAN is not registered with the SEC or any financial regulatory authority. The network facilitates connections and discussions but does not execute trades, manage funds, or provide fiduciary services.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">4. Content Disclaimer</h2>
-        <p>Information shared within TAN by members is their own opinion and does not represent the views of TAN. Always conduct your own due diligence before acting on any information shared within the network.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">5. Affiliate Relationships</h2>
-        <p>TAN may maintain affiliate or partnership relationships with third-party services. These relationships are disclosed when relevant. We prioritize the interests of our members in any such arrangements.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">6. Data Privacy</h2>
+<body class="bg-ln-cream text-ln-brown font-sans antialiased">
+
+<nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-ln-cream/90 backdrop-blur-md">
+  <a href="index.html" class="text-sm font-bold tracking-widest uppercase">LandNow</a>
+  <a href="index.html" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 hover:text-ln-brown transition-colors">Back to Home</a>
+</nav>
+
+<main class="pt-24 pb-20 px-6 md:px-20">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-ln-light-tan/40 p-8 md:p-12 reveal">
+      <h1 class="text-3xl serif-font mb-2">Disclosure</h1>
+      <p class="text-ln-brown/40 text-xs mb-10">Last updated: June 2026</p>
+      <div class="space-y-6 text-sm leading-relaxed text-ln-brown/80">
+        <p>LandNow is committed to transparency. This disclosure outlines the nature of the network and important notices for prospective members.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">1. Nature of the Network</h2>
+        <p>LandNow is a private membership community. It is not an investment club, advisory service, or financial institution. We do not provide financial advice, investment recommendations, or legal counsel.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">2. No Guarantee of Returns</h2>
+        <p>Membership does not guarantee any specific financial results, business outcomes, or investment returns. Participation is for professional development and connection.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">3. Not a Financial Service</h2>
+        <p>LandNow is not registered with the SEC or any financial regulatory authority. The network facilitates connections and discussions but does not execute trades, manage funds, or provide fiduciary services.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">4. Content Disclaimer</h2>
+        <p>Information shared by members is their own opinion. Always conduct your own due diligence before acting on any information shared within the network.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">5. Affiliate Relationships</h2>
+        <p>The network may maintain affiliate or partnership relationships with third-party services. These are disclosed when relevant.</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">6. Data Privacy</h2>
         <p>We do not sell member data. Member information is used solely for network operations as described in our Privacy Policy.</p>
-        <h2 class="text-white font-medium text-base mt-8 mb-3">7. Contact</h2>
-        <p>For questions about this disclosure: foreignaffairsllc2017@gmail.com</p>
+
+        <h2 class="text-ln-brown serif-font text-base mt-10 mb-3">7. Contact</h2>
+        <p><a href="mailto:foreignaffairsllc2017@gmail.com" class="text-ln-tan underline">foreignaffairsllc2017@gmail.com</a></p>
       </div>
     </div>
-    <div class="text-center mt-12 text-white/20 text-xs font-mono">&copy; 2025 LandNow. Private Membership.</div>
   </div>
+</main>
+
+<footer class="bg-ln-brown text-ln-cream pt-24 pb-0 relative overflow-hidden">
+  <div class="px-6 md:px-20 relative z-10">
+    <div class="flex flex-col lg:flex-row justify-between gap-16 mb-12">
+      <div class="lg:w-2/3">
+        <ul class="space-y-4 text-xl md:text-2xl lg:text-3xl serif-font">
+          <li><a href="index.html" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Home</a></li>
+          <li><a href="index.html#benefits" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Benefits</a></li>
+          <li><a href="index.html#how-it-works" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">How It Works</a></li>
+          <li><a href="index.html#faq" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">FAQ</a></li>
+          <li><a href="index.html#membership" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Membership</a></li>
+        </ul>
+        <p class="text-xs opacity-50 mt-8 max-w-md">Private Professional Community. Land &amp; Water Rights &bull; Strategic Acquisitions &bull; Investment &bull; Education.</p>
+      </div>
+      <div class="lg:w-1/4 flex flex-col justify-between">
+        <div class="flex gap-4 mb-10">
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="LinkedIn"><span class="text-xs font-bold">in</span></a>
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="X"><span class="text-xs font-bold">x</span></a>
+          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="Instagram"><span class="text-xs font-bold">ig</span></a>
+        </div>
+        <div class="space-y-2 text-xs opacity-60">
+          <p><a class="hover:opacity-100" href="terms.html">Terms of Service</a></p>
+          <p><a class="hover:opacity-100" href="privacy.html">Privacy Policy</a></p>
+          <p><a class="hover:opacity-100" href="mailto:foreignaffairsllc2017@gmail.com">Contact</a></p>
+          <div class="pt-6"><p>&copy; 2026. All Rights Reserved.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full overflow-hidden pb-0 -mb-[2px] leading-none select-none pointer-events-none">
+    <h2 class="text-[22vw] md:text-[16vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.75] drift-slow">LANDNOW</h2>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  })();
+</script>
 </body>
 </html>

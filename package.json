@@ -1,0 +1,15 @@
+{
+  "name": "landnow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LandNow — Private Network for Land & Water Rights Professionals",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "stripe": "^17.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^39.0.0"
+  }
+}
