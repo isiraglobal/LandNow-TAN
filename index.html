@@ -7,6 +7,7 @@
 <meta name="description" content="A private network for investors, operators, developers, and professionals focused on land acquisitions, water rights, due diligence, and strategic partnerships."/>
 <meta property="og:title" content="LandNow — Where Serious Land & Water Rights Professionals Connect"/>
 <meta property="og:description" content="Private network. Proven frameworks. Expert insights. For people who execute."/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -111,7 +112,7 @@
 </head>
 <body class="bg-ln-cream text-ln-brown font-sans overflow-x-hidden">
 
-<div id="splash"><video autoplay muted playsinline src="video.mp4"></video></div>
+<div id="splash"><video autoplay muted playsinline preload="auto" src="video.mp4"></video></div>
 <div id="loader"><span>Loading</span></div>
 
 <div id="site">
@@ -476,16 +477,25 @@
       document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
     }
 
+    const FALLBACK_MS = 4000;
+
+    function onVideoEnded() {
+      sessionStorage.setItem('ln_intro_played', '1');
+      showSite();
+    }
+
     if (sessionStorage.getItem('ln_intro_played')) {
       loader.style.display = 'none';
       showSite();
     } else {
-      video.addEventListener('ended', () => {
-        sessionStorage.setItem('ln_intro_played', '1');
-        showSite();
-      });
+      const fallbackTimer = setTimeout(showSite, FALLBACK_MS);
+      video.addEventListener('ended', () => { clearTimeout(fallbackTimer); onVideoEnded(); });
+      video.addEventListener('error', () => { clearTimeout(fallbackTimer); showSite(); });
       setTimeout(() => loader.classList.add('hidden'), 2000);
-      setTimeout(() => { video.playbackRate = 1.3; video.play(); }, 500);
+      video.addEventListener('canplay', () => {
+        video.playbackRate = 1.3;
+        video.play().catch(() => showSite());
+      }, { once: true });
     }
   })();
 
