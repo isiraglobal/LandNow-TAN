@@ -116,14 +116,6 @@
     .carousel-btn-prev { left: -52px; }
     .carousel-btn-next { right: -52px; }
 
-    .carousel-dot {
-      width: 10px; height: 10px; border-radius: 50%; border: none; cursor: pointer;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      background: #b5925a;
-    }
-    .carousel-dot.active { background: #b5925a; }
-    .carousel-dot.inactive { background: #3d372e; }
-
     @media (max-width: 768px) {
       .carousel-btn { display: none; }
       .carousel-dot { width: 8px; height: 8px; }
@@ -376,7 +368,6 @@
     </button>
   </div>
 
-  <div class="flex justify-center items-center gap-3 mt-8" id="carouselDots"></div>
 </section>
 
 <section class="py-20 px-6 bg-ln-cream" id="how-it-works">
@@ -618,7 +609,6 @@
     const track = document.getElementById('carouselTrack');
     const prevBtn = document.getElementById('carouselPrev');
     const nextBtn = document.getElementById('carouselNext');
-    const dotsContainer = document.getElementById('carouselDots');
     if (!track) return;
 
     const slides = track.querySelectorAll('.carousel-slide');
@@ -626,36 +616,6 @@
     let current = 0;
     let autoplayTimer = null;
     const AUTOPLAY_DELAY = 5000;
-
-    function renderDots() {
-      dotsContainer.innerHTML = '';
-      for (let i = 0; i < total; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'carousel-dot';
-        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
-      }
-      updateDots();
-    }
-
-    function updateDots() {
-      const dots = dotsContainer.querySelectorAll('.carousel-dot');
-      dots.forEach((dot, i) => {
-        const dist = Math.min((i - current + total) % total, (current - i + total) % total);
-        dot.classList.remove('active', 'inactive');
-        if (dist === 0) {
-          dot.classList.add('active');
-          dot.style.opacity = '1';
-          dot.style.transform = 'scale(1)';
-        } else {
-          dot.classList.add('inactive');
-          const fade = Math.max(0.08, 1 - dist * 0.35);
-          dot.style.opacity = fade;
-          dot.style.transform = `scale(${Math.max(0.6, 1 - dist * 0.15)})`;
-        }
-      });
-    }
 
     function goTo(index) {
       current = index;
@@ -679,7 +639,6 @@
     carousel.addEventListener('mouseenter', () => { if (autoplayTimer) clearInterval(autoplayTimer); });
     carousel.addEventListener('mouseleave', resetAutoplay);
 
-    renderDots();
     goTo(0);
   }
 
