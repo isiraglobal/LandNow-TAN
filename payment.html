@@ -66,37 +66,38 @@
       <div class="inline-flex items-center justify-center mb-6">
         <span class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">Access</span>
       </div>
-      <h1 class="text-3xl md:text-4xl serif-font mb-4 float-subtle">Complete Your Request</h1>
-      <p class="text-ln-brown/70 text-sm max-w-md mx-auto">A small commitment to maintain signal quality. The lowest-friction way inside.</p>
+      <h1 class="text-3xl md:text-4xl serif-font mb-4 float-subtle">Submit Your Verification Request</h1>
+      <p class="text-ln-brown/70 text-sm max-w-md mx-auto">An entry verification to ensure network quality. Protecting off-market deal listings.</p>
     </div>
 
     <div class="bg-ln-light-tan/40 p-8 mb-6 reveal">
       <div class="flex items-center justify-between pb-6 border-b border-ln-brown/10 mb-6">
-        <span class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50">Network Access Fee</span>
+        <span class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50">Network Verification Fee</span>
         <div class="flex items-baseline gap-1">
-          <span class="text-3xl serif-font">$2.00</span>
-          <span class="text-ln-brown/40 text-[10px] uppercase">/mo</span>
+          <span class="text-3xl serif-font">$297</span>
+          <span class="text-ln-brown/40 text-[10px] uppercase">/ one-time</span>
         </div>
       </div>
 
-      <form class="space-y-6" onsubmit="event.preventDefault();window.location='mailto:foreignaffairsllc2017@gmail.com?subject=LandNow%20Payment%20Request&body='+encodeURIComponent('Name: '+document.getElementById('f-name').value+'\nEmail: '+document.getElementById('f-email').value+'\nTrack: '+document.getElementById('f-track').value)">
+      <form id="payment-form" class="space-y-6" onsubmit="event.preventDefault();window.location='mailto:foreignaffairsllc2017@gmail.com?subject=LandNow%20Payment%20Request&body='+encodeURIComponent('Name: '+document.getElementById('f-name').value+'\nEmail: '+document.getElementById('f-email').value+'\nTrack: '+document.getElementById('f-track').value)">
         <div>
           <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Full Name</label>
-          <input type="text" id="f-name" placeholder="Your full name" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
+          <input type="text" id="f-name" required placeholder="Your full name" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
         </div>
         <div>
           <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Email Address</label>
-          <input type="email" id="f-email" placeholder="name@company.com" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
+          <input type="email" id="f-email" required placeholder="name@company.com" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm"/>
         </div>
         <div>
           <label class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/60 block mb-2">Desired Track</label>
-          <select id="f-track" class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm">
+          <select id="f-track" required class="w-full bg-transparent border-0 border-b border-ln-brown/20 pb-3 text-ln-brown outline-none focus:border-ln-tan transition-colors text-sm">
             <option value="">Select...</option>
             <option>Operator</option>
             <option>Capital</option>
             <option>Personal Acquisition</option>
           </select>
         </div>
+        <button type="submit" class="block w-full bg-ln-brown text-white py-4 text-sm uppercase tracking-[0.2em] text-center hover:bg-ln-dark-tan transition-all mt-6">Submit Access Request</button>
       </form>
     </div>
 
@@ -104,26 +105,24 @@
       <div class="flex items-start gap-3">
         <span class="text-ln-tan text-lg">*</span>
         <div>
-          <h4 class="text-sm mb-1">Transaction</h4>
-          <p class="text-xs text-ln-brown/60">Your information is encrypted and processed securely. We do not store payment details.</p>
+          <h4 class="text-sm mb-1">Verification Escrow</h4>
+          <p class="text-xs text-ln-brown/60">This verification charge ensures applicants are active transactional players. All payments are processed through encrypted channels.</p>
         </div>
       </div>
     </div>
-
-    <a href="mailto:foreignaffairsllc2017@gmail.com?subject=LandNow%20Access%20Request&body=Name%3A%0AEmail%3A%0ATrack%3A" class="block w-full bg-ln-brown text-white py-4 text-sm uppercase tracking-[0.2em] text-center hover:bg-ln-dark-tan transition-all reveal delay-2">Submit Access Request</a>
 
     <p class="text-center mt-6 text-[10px] uppercase tracking-[0.2em] text-ln-brown/30">Secure connection</p>
 
     <div class="mt-16 flex justify-center">
       <div class="inline-flex items-center gap-6 px-6 py-4 bg-ln-light-tan/40">
         <div class="text-center">
-          <div class="serif-font text-sm font-bold">1,200+</div>
-          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Members</div>
+          <div class="serif-font text-sm font-bold">127</div>
+          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Active Operators</div>
         </div>
         <div class="w-px h-8 bg-ln-brown/10"></div>
         <div class="text-center">
-          <div class="serif-font text-sm font-bold">120s</div>
-          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Onboarding</div>
+          <div class="serif-font text-sm font-bold">48h</div>
+          <div class="text-[8px] uppercase tracking-[0.1em] text-ln-brown/40 mt-0.5">Vetting Turnaround</div>
         </div>
       </div>
     </div>

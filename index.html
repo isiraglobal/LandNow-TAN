@@ -11,7 +11,8 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="preload" as="video" href="video.mp4">
 <script>
     tailwind.config = {
       theme: {
@@ -31,18 +32,31 @@
     .hero-card-shadow { box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5); }
 
     #splash {
-      position: fixed; inset: 0; z-index: 1000;
+      position: fixed; inset: 0; z-index: 1001;
       background: #000;
       display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.8s ease; cursor: pointer;
     }
     #splash.hidden { opacity: 0; pointer-events: none; }
     #splash video { width: 100vw; height: 100vh; object-fit: cover; }
+    #splash .loader-text {
+      position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+      font-family: 'Outfit', sans-serif; font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.4);
+      transition: opacity 0.5s ease;
+    }
+    #splash .loader-text.hidden { opacity: 0; }
+    #splash .tap-hint {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      font-family: 'Outfit', sans-serif; font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.2em; color: rgba(255,255,255,0.3);
+      animation: pulse-soft 2s ease-in-out infinite;
+    }
     #loader {
-      position: fixed; inset: 0; z-index: 1001;
+      position: fixed; inset: 0; z-index: 1000;
       display: flex; align-items: center; justify-content: center;
       background: #000;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
     #loader span {
@@ -62,17 +76,8 @@
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
     }
 
-    @keyframes text-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .text-marquee-track { display: flex; width: max-content; animation: text-marquee 30s linear infinite; }
-    .text-marquee-wrap {
-      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    }
-
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
     .float-slow { animation: float 6s ease-in-out infinite; }
-    @keyframes float-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    .float-subtle { animation: float-subtle 4s ease-in-out infinite; }
     @keyframes ken-burns { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
     .ken-burns { animation: ken-burns 20s ease-in-out infinite; }
     @keyframes pulse-soft { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
@@ -81,8 +86,6 @@
     .pulse-accent { animation: pulse-accent 2.5s ease-in-out infinite; }
     @keyframes drift-slow { 0% { transform: translateX(0); } 50% { transform: translateX(20px); } 100% { transform: translateX(0); } }
     .drift-slow { animation: drift-slow 12s ease-in-out infinite; }
-    @keyframes scroll-indicator-pulse { 0%, 100% { opacity: 0.5; height: 40px; } 50% { opacity: 1; height: 55px; } }
-    .scroll-line { animation: scroll-indicator-pulse 2s ease-in-out infinite; }
     @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .gradient-shift { background-size: 200% 200%; animation: gradient-shift 8s ease infinite; }
 
@@ -100,604 +103,835 @@
     .delay-4 { transition-delay: 0.4s; }
     .delay-5 { transition-delay: 0.5s; }
 
-    .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-    .carousel-slide { min-width: 100%; box-sizing: border-box; }
-    .carousel-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(61, 55, 46, 0.85); color: #e5e0d4;
-      border: none; cursor: pointer; transition: all 0.2s;
-      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    /* Footer */
+    .ln-footer {
+      background: #3d372e;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
-    .carousel-btn:hover { background: #3d372e; transform: translateY(-50%) scale(1.08); }
-    .carousel-btn:disabled { opacity: 0.25; cursor: default; transform: translateY(-50%) scale(1); }
-    .carousel-btn-prev { left: -52px; }
-    .carousel-btn-next { right: -52px; }
+    .ln-footer-inner {
+      display: flex;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .ln-footer-left {
+      flex: 0 0 82%;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(199, 163, 122, 0.12);
+    }
+    .ln-footer-right {
+      flex: 0 0 18%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 32px;
+    }
+    .ln-footer-nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .ln-footer-nav li {
+      border-bottom: 1px solid rgba(199, 163, 122, 0.10);
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .ln-footer-nav li:first-child {
+      border-top: 1px solid rgba(199, 163, 122, 0.10);
+    }
+    .ln-footer-nav a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.025em;
+      color: #C7A37A;
+      text-decoration: none;
+      padding: 0 40px;
+      transition: color 0.3s ease, padding-left 0.3s ease;
+      display: inline-block;
+      width: 100%;
+    }
+    .ln-footer-nav a:hover {
+      color: #ddc4a0;
+      padding-left: 48px;
+    }
+    .ln-footer-pills {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 48px;
+    }
+    .ln-footer-pill {
+      width: 48px;
+      height: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(199, 163, 122, 0.25);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #C7A37A;
+    }
+    .ln-footer-pill:hover {
+      background: rgba(199, 163, 122, 0.1);
+      border-color: rgba(199, 163, 122, 0.4);
+    }
+    .ln-footer-pill svg {
+      width: 16px;
+      height: 16px;
+    }
+    .ln-footer-social {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .ln-footer-social a:hover {
+      background: rgba(199, 163, 122, 0.1);
+      border-color: rgba(199, 163, 122, 0.4);
+      transform: scale(1.05);
+    }
+    .ln-footer-email {
+      display: flex;
+      justify-content: center;
+    }
+    .ln-footer-email a {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(199, 163, 122, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #C7A37A;
+      transition: all 0.3s ease;
+    }
+    .ln-footer-email a:hover {
+      background: rgba(199, 163, 122, 0.1);
+      border-color: rgba(199, 163, 122, 0.4);
+      transform: scale(1.05);
+    }
+    .ln-footer-email svg {
+      width: 20px;
+      height: 20px;
+    }
+    .ln-footer-legal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ln-footer-legal a,
+    .ln-footer-legal span {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(199, 163, 122, 0.45);
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(199, 163, 122, 0.08);
+      transition: color 0.3s ease;
+    }
+    .ln-footer-legal a:first-child {
+      border-top: 1px solid rgba(199, 163, 122, 0.08);
+    }
+    .ln-footer-legal a:hover {
+      color: #C7A37A;
+    }
+    .ln-footer-attr {
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 10px;
+      color: rgba(199, 163, 122, 0.35);
+      margin-top: 20px;
+    }
+    .ln-footer-wordmark {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0.78;
+      margin-top: auto;
+      position: relative;
+      z-index: 1;
+    }
+    .ln-footer-wordmark h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14vw;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(199, 163, 122, 0.05);
+      text-transform: uppercase;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      line-height: 0.78;
+      white-space: nowrap;
+      user-select: none;
+    }
 
-    @media (max-width: 768px) {
-      .carousel-btn { display: none; }
+    @media (max-width: 767px) {
+      .ln-footer-inner {
+        flex-direction: column;
+      }
+      .ln-footer-left {
+        flex: none;
+        border-right: none;
+        border-bottom: 1px solid rgba(199, 163, 122, 0.12);
+      }
+      .ln-footer-right {
+        flex: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 32px 24px;
+        gap: 24px;
+        justify-content: center;
+        align-items: center;
+      }
+      .ln-footer-email {
+        order: -1;
+        width: 100%;
+      }
+      .ln-footer-legal {
+        width: 100%;
+      }
+      .ln-footer-nav a {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        padding: 0 24px;
+      }
+      .ln-footer-nav a:hover {
+        padding-left: 32px;
+      }
+      .ln-footer-wordmark h2 {
+        font-size: 18vw;
+      }
     }
   </style>
 </head>
 <body class="bg-ln-cream text-ln-brown font-sans overflow-x-hidden">
 
-<div id="splash"><video autoplay muted playsinline preload="auto" src="video.mp4"></video></div>
+<div id="splash">
+  <video muted playsinline preload="auto" src="video.mp4"></video>
+  <div class="tap-hint">Tap to continue</div>
+  <div class="loader-text" id="splashLoader">Loading</div>
+</div>
 <div id="loader"><span>Loading</span></div>
 
 <div id="site">
 
-<nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center mix-blend-difference text-white">
-  <a href="index.html" class="text-sm font-bold tracking-widest uppercase">LandNow</a>
+<nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-md text-ln-brown">
+  <a href="index.html"><img src="logo.svg" alt="LandNow" class="h-6 md:h-7 w-auto"/></a>
   <div class="flex items-center space-x-6">
-    <a href="#membership" class="hidden md:inline text-[10px] uppercase tracking-[0.2em] border border-white/30 px-5 py-2 hover:bg-white/10 transition-colors">See If You Qualify</a>
-    <button class="p-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:hidden">
+    <a href="#membership" class="hidden md:inline text-[11px] uppercase tracking-[0.2em] bg-ln-brown text-white px-7 py-3 font-medium hover:bg-ln-dark-tan transition-colors">Get Access — $3</a>
+    <button class="p-2 border border-ln-brown/20 rounded-full hover:bg-ln-brown/5 transition-colors md:hidden">
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
     </button>
   </div>
 </nav>
 
-<section class="relative min-h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden" style="background-color:#2b261f;">
-  <div class="absolute inset-0 opacity-30 mix-blend-overlay">
-    <img alt="" class="w-full h-full object-cover ken-burns" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80"/>
-  </div>
-  <div class="relative z-10 w-full max-w-2xl bg-ln-light-tan p-10 md:p-14 flex flex-col items-center justify-center hero-card-shadow mt-20 mx-auto float-slow">
-    <div class="mb-6 reveal is-visible">
-      <span class="bg-white/90 text-ln-brown px-4 py-2 text-[10px] leading-relaxed text-center max-w-[300px] font-bold tracking-[0.15em] uppercase pulse-accent block">Private Network &bull; Land &amp; Water Rights &bull; Strategic Acquisitions</span>
-    </div>
-    <h2 class="text-2xl md:text-3xl serif-font mb-5 leading-tight reveal is-visible delay-2">The Most Valuable Assets on Earth Aren&rsquo;t Listed on Any Exchange.</h2>
-    <p class="text-sm leading-relaxed max-w-[340px] mx-auto text-ln-brown/80 reveal is-visible delay-3">While Wall Street trades futures, a separate market is quietly absorbing the physical assets every future depends on&mdash;water, land, and the rights to both. This community gives you direct access to that market.</p>
-    <div class="flex flex-col gap-3 mt-8 w-full max-w-[280px] reveal is-visible delay-4">
-      <a href="#membership" class="bg-ln-brown text-white py-3 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-ln-dark-tan transition-all">See If You Qualify</a>
-      <a href="#agenda" class="border border-ln-brown/30 text-ln-brown py-3 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-ln-brown/5 transition-all">What This Delivers</a>
-    </div>
-  </div>
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] tracking-widest uppercase opacity-50 flex flex-col items-center gap-4">
-    <span>Scroll</span>
-    <div class="w-px bg-white/30 scroll-line"></div>
-  </div>
-</section>
-
-<section class="py-28 px-6 md:px-20 bg-ln-cream" id="agenda">
-  <div class="max-w-4xl mx-auto">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">The Agenda</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mb-10 reveal">What This Community Actually Delivers.</h2>
-    <div class="text-sm text-ln-brown/80 leading-relaxed space-y-5 reveal delay-1 max-w-3xl">
-      <p>Not content. Not courses. Not motivation.</p>
-      <p>This is an execution environment for investors who are actively acquiring land and water rights&mdash;or ready to start with the right infrastructure behind them.</p>
-      <p class="font-medium text-ln-brown">The agenda is simple:</p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-5 mt-10 reveal delay-2">
-      <div class="bg-white/40 p-6 flex items-start gap-4">
-        <span class="text-ln-tan text-lg serif-font flex-shrink-0">01</span>
-        <p class="text-sm text-ln-brown/80">Get you into qualified deals before the broader market catches on.</p>
-      </div>
-      <div class="bg-white/40 p-6 flex items-start gap-4">
-        <span class="text-ln-tan text-lg serif-font flex-shrink-0">02</span>
-        <p class="text-sm text-ln-brown/80">Give you the legal frameworks and acquisition methodology to move with precision.</p>
-      </div>
-      <div class="bg-white/40 p-6 flex items-start gap-4">
-        <span class="text-ln-tan text-lg serif-font flex-shrink-0">03</span>
-        <p class="text-sm text-ln-brown/80">Connect you with the operators, attorneys, and hydrologists who actually close these transactions.</p>
-      </div>
-      <div class="bg-white/40 p-6 flex items-start gap-4">
-        <span class="text-ln-tan text-lg serif-font flex-shrink-0">04</span>
-        <p class="text-sm text-ln-brown/80">Keep you out of the pitfalls that destroy 9 out of 10 first-time land and water investors.</p>
+<section class="relative min-h-screen flex items-center justify-center px-4 md:px-12 overflow-hidden bg-white">
+  <div class="flex flex-col md:flex-row items-center w-full max-w-6xl mx-auto gap-8 md:gap-12 py-24">
+    <div class="w-full md:w-1/2 text-center md:text-left">
+      <p class="text-[10px] uppercase tracking-[0.25em] text-ln-tan mb-5">The Private Network for Land &amp; Water Rights Operators</p>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl serif-font leading-tight text-ln-brown mb-5">The Most Valuable Land and Water Rights Deals in America Happen Before They&rsquo;re Listed.</h1>
+      <p class="text-sm leading-relaxed text-ln-brown/70 max-w-md mb-6">While everyone else is bidding on Zillow and fighting over wholesaling crumbs, a small group of investors has access to off-market positions, senior water rights, and operator-level deal flow &mdash; before the public even knows they exist.</p>
+      <div class="flex flex-col items-start gap-4">
+        <a href="#membership" class="bg-ln-brown text-white text-base md:text-lg uppercase tracking-[0.2em] font-bold hover:bg-ln-dark-tan transition-all text-center w-full sm:w-auto px-14 py-5 hero-card-shadow">Get Access Now &mdash; $3</a>
+        <a href="#feed" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 hover:text-ln-brown transition-colors">Or explore the feed →</a>
       </div>
     </div>
-    <p class="text-sm text-ln-brown/80 mt-8 reveal delay-3 max-w-2xl">Result: You operate with the deal flow, intelligence, and network that usually takes a decade to build&mdash;compressed into months.</p>
-  </div>
-</section>
-
-<section class="py-24 px-6 md:px-20 bg-ln-brown text-ln-cream relative overflow-hidden" id="what-it-is">
-  <div class="max-w-5xl mx-auto relative z-10">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-cream/20 p-2 uppercase tracking-[0.3em] text-[10px] text-ln-cream/70">What This Is</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mb-10 reveal">A Working Network for Land &amp; Water Rights Investors.</h2>
-    <div class="text-sm text-ln-cream/80 leading-relaxed space-y-5 max-w-3xl reveal delay-1">
-      <p>We assembled a closed group of acquisition specialists, water rights attorneys, hydrologists, and active dealmakers&mdash;then built the infrastructure for them to transact and grow together.</p>
-      <p>Every session is practical. Every connection is vetted. Every piece of intelligence is curated for one purpose: helping you close real deals with real confidence.</p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-8 mt-12 reveal delay-2">
-      <div class="border border-ln-cream/10 p-6">
-        <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">This Is Not</p>
-        <ul class="space-y-2 text-sm text-ln-cream/60">
-          <li>&mdash; A newsletter</li>
-          <li>&mdash; An educational course</li>
-          <li>&mdash; A mastermind for beginners</li>
-          <li>&mdash; A public forum</li>
-        </ul>
+    <div class="w-full md:w-1/2">
+      <div class="relative overflow-hidden">
+        <video autoplay muted loop playsinline class="w-full h-[300px] md:h-[500px] object-cover" poster="hero-bg.png" src="hero-bg.mp4"></video>
+        <div class="absolute inset-0 border border-ln-brown/10 pointer-events-none"></div>
       </div>
-      <div class="border border-ln-cream/10 p-6">
-        <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">This Is</p>
-        <ul class="space-y-2 text-sm text-ln-cream/80">
-          <li>&mdash; A private, professional environment</li>
-          <li>&mdash; Real deal flow and intelligence</li>
-          <li>&mdash; Execution support from active operators</li>
-          <li>&mdash; A vetted network of serious investors</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="absolute right-[-10%] top-1/3 w-1/3 opacity-5 pointer-events-none">
-    <h2 class="text-[16vw] font-bold tracking-tighter uppercase leading-none rotate-12">NETWORK</h2>
-  </div>
-</section>
-
-<section class="py-24 px-6 md:px-20 bg-ln-cream" id="why-now">
-  <div class="max-w-5xl mx-auto">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">Why Now</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-4xl mb-10 reveal">The Window to Position Yourself Isn&rsquo;t Unlimited.</h2>
-    <p class="text-sm text-ln-brown/60 mb-12 reveal delay-1 max-w-2xl">Three converging forces are creating a window that won&rsquo;t stay open:</p>
-    <div class="space-y-8 reveal delay-2">
-      <div class="bg-white/40 p-6 md:p-8">
-        <span class="text-ln-tan text-2xl serif-font block mb-2">01</span>
-        <h3 class="text-base font-bold uppercase tracking-widest mb-2">Water Scarcity Is Accelerating</h3>
-        <p class="text-sm text-ln-brown/70 leading-relaxed">The Ogallala Aquifer is declining. Colorado River cuts are permanent. Agricultural, industrial, and municipal demand is outpacing supply across 40+ states. Water rights aren&rsquo;t a future play. They&rsquo;re a present repricing event.</p>
-      </div>
-      <div class="bg-white/40 p-6 md:p-8">
-        <span class="text-ln-tan text-2xl serif-font block mb-2">02</span>
-        <h3 class="text-base font-bold uppercase tracking-widest mb-2">Regulatory Complexity Is Widening the Gap</h3>
-        <p class="text-sm text-ln-brown/70 leading-relaxed">Prior appropriation, riparian rights, adjudicated systems, beneficial use determinations. The investors who understand these frameworks move first. The ones who don&rsquo;t absorb the cost of learning through mistakes.</p>
-      </div>
-      <div class="bg-white/40 p-6 md:p-8">
-        <span class="text-ln-tan text-2xl serif-font block mb-2">03</span>
-        <h3 class="text-base font-bold uppercase tracking-widest mb-2">Mainstream Capital Hasn&rsquo;t Arrived Yet</h3>
-        <p class="text-sm text-ln-brown/70 leading-relaxed">While institutions are quietly accumulating, the individual investor who acts in the next 24&ndash;36 months has a significant timing advantage. Once this asset class goes mainstream, the asymmetric opportunity closes.</p>
-      </div>
-    </div>
-    <div class="mt-10 p-6 bg-ln-brown text-ln-cream reveal delay-3">
-      <p class="text-sm leading-relaxed"><span class="font-bold">The math:</span> Every year of delay costs you both the deal flow that&rsquo;s available now and the learning curve advantage you could have built inside this network.</p>
     </div>
   </div>
 </section>
 
-<section class="py-24 px-6 md:px-20 bg-ln-cream" id="benefits">
-  <div class="max-w-6xl mx-auto text-center mb-12 reveal">
-    <div class="flex justify-center mb-8">
-      <div class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">What Members Actually Gain</div>
+<section class="py-10 px-6 md:px-20 bg-ln-brown overflow-hidden">
+  <div class="marquee-container overflow-hidden">
+    <div class="marquee-track-ltr">
+      <div class="flex items-center gap-16 px-8 text-[10px] uppercase tracking-[0.25em] text-ln-cream/30">
+        <span>Off-Market Deal Flow</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Water Rights 101</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Due Diligence Checklists</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Creative Acquisition</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Exit Playbooks</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Four Avatars Framework</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Prior Appropriation</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>JV Matching</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Pitch Nights</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Double Closings</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>1031 Exchanges</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Operator Network</span>
+      </div>
+      <div class="flex items-center gap-16 px-8 text-[10px] uppercase tracking-[0.25em] text-ln-cream/30">
+        <span>Off-Market Deal Flow</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Water Rights 101</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Due Diligence Checklists</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Creative Acquisition</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Exit Playbooks</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Four Avatars Framework</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Prior Appropriation</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>JV Matching</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Pitch Nights</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Double Closings</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>1031 Exchanges</span>
+        <span class="w-1 h-1 rounded-full bg-ln-tan/40"></span>
+        <span>Operator Network</span>
+      </div>
     </div>
-    <h2 class="text-3xl md:text-4xl serif-font max-w-3xl mx-auto leading-snug">
-      Benefit-first access. Not feature lists.
-    </h2>
-    <p class="text-sm text-ln-brown/60 max-w-xl mx-auto mt-4">Every resource is designed to save you time, prevent mistakes, or surface opportunities you wouldn&rsquo;t find alone.</p>
   </div>
+</section>
 
-  <div class="max-w-5xl mx-auto relative reveal">
-    <div class="overflow-hidden rounded-none">
-      <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white gradient-shift" style="background: linear-gradient(135deg, #3d372e, #4a4238, #3d372e); min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: Avoid the $50k&ndash;$200k in mistakes most first-time investors make.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">Acquisition Frameworks That Cut Your Learning Curve by Years</h3>
-              <p class="text-sm opacity-80 leading-relaxed">Stop building your methodology from scratch. Our frameworks have been tested across hundreds of transactions&mdash;giving you a structured approach to sourcing, underwriting, and closing land and water rights deals from day one.</p>
-            </div>
-          </div>
+<section class="py-24 px-6 md:px-20 bg-ln-cream overflow-hidden" id="what-you-get">
+  <div class="max-w-5xl mx-auto text-center mb-14 reveal">
+    <h2 class="text-3xl md:text-5xl serif-font max-w-3xl mx-auto leading-tight">The Moment You Join</h2>
+    <p class="text-sm text-ln-brown/60 max-w-xl mx-auto mt-4 reveal delay-1">Step into the network. Gain increasing access to gurus or independent partners. Courses are available only if you&rsquo;re genuinely interested.</p>
+    <p class="text-sm text-ln-brown/80 max-w-xl mx-auto mt-4 reveal delay-2 font-medium">The real focus is: deal flow, operator playbooks, introductory research, field scripts, acquisition frameworks &mdash; and, most importantly, a network of people actively closing transactions.</p>
+  </div>
+  <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+    <div class="bg-white/60 p-8 border border-ln-brown/10 reveal">
+      <h3 class="text-ln-tan text-lg serif-font mb-2">01</h3>
+      <h4 class="text-sm font-bold uppercase tracking-wider text-ln-brown mb-2">The Feed</h4>
+      <p class="text-xs text-ln-brown/70 leading-relaxed">Breaking news, time-sensitive opportunities, off-market deals, and important market signals &mdash; straight to your screen. We vet brokers up front and remove the social-media noise so operators can focus on actually growing and closing deals.</p>
+    </div>
+    <div class="bg-white/60 p-8 border border-ln-brown/10 reveal delay-1">
+      <h3 class="text-ln-tan text-lg serif-font mb-2">02</h3>
+      <h4 class="text-sm font-bold uppercase tracking-wider text-ln-brown mb-2">The Playbooks</h4>
+      <p class="text-xs text-ln-brown/70 leading-relaxed">Access our growing library of flagship eBooks and templates covering:</p>
+      <ul class="text-xs text-ln-brown/70 leading-relaxed mt-2 space-y-1 list-disc list-inside">
+        <li>Four Avatars Framework</li>
+        <li>Water Rights 101</li>
+        <li>Due Diligence Checklists</li>
+        <li>Creative Acquisition Strategies</li>
+        <li>Exit Playbooks</li>
+        <li>and much more.</li>
+      </ul>
+    </div>
+    <div class="bg-white/60 p-8 border border-ln-brown/10 reveal delay-2">
+      <h3 class="text-ln-tan text-lg serif-font mb-2">03</h3>
+      <h4 class="text-sm font-bold uppercase tracking-wider text-ln-brown mb-2">The Community</h4>
+      <p class="text-xs text-ln-brown/70 leading-relaxed">Private Discord with dedicated channels for:</p>
+      <ul class="text-xs text-ln-brown/70 leading-relaxed mt-2 space-y-1 list-disc list-inside">
+        <li>Deal Flow</li>
+        <li>Water Law</li>
+        <li>Pitch Nights</li>
+        <li>JV Matching</li>
+        <li>Operator Discussions</li>
+      </ul>
+      <p class="text-xs text-ln-brown/70 leading-relaxed mt-2">Everyone paid to be there. No tire-kickers. No spam.</p>
+    </div>
+    <div class="bg-white/60 p-8 border border-ln-brown/10 reveal delay-3">
+      <h3 class="text-ln-tan text-lg serif-font mb-2">04</h3>
+      <h4 class="text-sm font-bold uppercase tracking-wider text-ln-brown mb-2">Expert Access</h4>
+      <p class="text-xs text-ln-brown/70 leading-relaxed">Monthly livestreams and roundtables featuring:</p>
+      <ul class="text-xs text-ln-brown/70 leading-relaxed mt-2 space-y-1 list-disc list-inside">
+        <li>Land attorneys</li>
+        <li>Hydrologists</li>
+        <li>Experienced operators</li>
+        <li>Industry professionals actively building today</li>
+      </ul>
+      <p class="text-xs text-ln-brown/70 leading-relaxed mt-2">Ask questions. Get answers. Build your business.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-24 px-6 md:px-20 bg-ln-brown text-ln-cream overflow-hidden" id="ascension">
+  <div class="max-w-4xl mx-auto text-center mb-14 reveal">
+    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mx-auto">How the Ascension Works</h2>
+    <p class="text-sm text-ln-cream/60 mt-4 max-w-xl mx-auto">After you gain access, you choose exactly what you need. There is no pressure. Interviews or sales calls only happen if a particular service has prerequisites.</p>
+  </div>
+  <div class="max-w-3xl mx-auto reveal delay-2">
+    <div class="grid grid-cols-2 gap-px bg-ln-cream/10 text-sm">
+      <div class="bg-ln-brown p-4 text-[10px] uppercase tracking-[0.2em] text-ln-tan/70 font-medium">What You Want</div>
+      <div class="bg-ln-brown p-4 text-[10px] uppercase tracking-[0.2em] text-ln-tan/70 font-medium">What You Pay</div>
+      <div class="bg-ln-brown/60 p-4 text-xs text-ln-cream/80">The Feed, eBooks, Community and Playbooks</div>
+      <div class="bg-ln-brown/60 p-4 text-xs text-ln-tan font-bold">$3 &mdash; One-Time Entry</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">Premium Deal Flow &mdash; curated, vetted positions before public listing.</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">Due Diligence Support &mdash; title review, water assessment, legal framework review</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">JV Structuring &mdash; co-flip agreements, partnership documents, syndication setup</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">Done-With-You Builds &mdash; walk through your first 1&ndash;3 deals.</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">Fractional Syndications &mdash; pool capital alongside other operators.</div>
+      <div class="bg-ln-brown p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/80">Consulting Retainers &mdash; direct access to attorneys and operators.</div>
+      <div class="bg-ln-brown/60 p-4 border-t border-ln-cream/10 text-xs text-ln-cream/60">Self-Serve Upgrade</div>
+    </div>
+    <p class="text-xs text-ln-cream/50 text-center mt-6">Products and services range from $3 to $45,000+. Your $3 entry provides access to our foundational knowledge and network.</p>
+  </div>
+</section>
+
+
+
+<section class="py-24 px-6 md:px-20 bg-ln-cream overflow-hidden" id="why-now">
+  <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-10 items-center">
+    <div class="w-full md:w-2/5 reveal-left delay-1">
+      <div class="relative overflow-hidden">
+        <video autoplay muted loop playsinline class="w-full h-[300px] md:h-[450px] object-cover" poster="river.png" src="river.mp4"></video>
+        <div class="absolute inset-0 border border-ln-brown/10 pointer-events-none"></div>
+      </div>
+    </div>
+    <div class="w-full md:w-3/5">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl serif-font leading-tight max-w-3xl mb-4 reveal delay-1">What You&rsquo;re Actually Buying Into</h2>
+      <p class="text-sm text-ln-brown/60 max-w-xl mb-8 reveal delay-2">Land and water rights are the most defensible physical assets in America. Three forces are creating a narrow window:</p>
+      <div class="space-y-5 reveal delay-3">
+        <div class="bg-white/40 p-5">
+          <span class="text-ln-tan text-lg serif-font block mb-1">01</span>
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Water Is Being Repriced</h3>
+          <p class="text-xs text-ln-brown/70 leading-relaxed">Colorado River cuts are permanent. The Ogallala Aquifer is shrinking fast. Senior water rights are transitioning from an agricultural input to an institutional asset class &mdash; PE and pension funds are already buying. Private buyers who understand this now have a 3&ndash;5 year window before valuations reset.</p>
         </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white" style="background:#4a4238; min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: Your network determines your net worth. Ours is pre-filtered.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">A Vetted Network&mdash;No Tourists, No Time-Wasters</h3>
-              <p class="text-sm opacity-80 leading-relaxed">Every member has been screened for seriousness. You&rsquo;re not joining a public forum. You&rsquo;re entering a room where everyone is there for the same reason: to acquire and exit real asset positions.</p>
-            </div>
-          </div>
+        <div class="bg-white/40 p-5">
+          <span class="text-ln-tan text-lg serif-font block mb-1">02</span>
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Complexity Is Your Moat</h3>
+          <p class="text-xs text-ln-brown/70 leading-relaxed">Prior appropriation, adjudicated basins, title chain gaps, riparian vs. appropriative rights, wetland mitigation credits &mdash; this is a learned skill set. The investor who can parse hydrological reports and verify &ldquo;wet water&rdquo; from &ldquo;paper water&rdquo; owns the market.</p>
         </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white gradient-shift" style="background: linear-gradient(225deg, #3d372e, #4a4238, #3d372e); min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: Never be the person hearing about a deal after it closed.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">Live Deal Analysis&mdash;Watch Real Transactions Close</h3>
-              <p class="text-sm opacity-80 leading-relaxed">We break down active acquisition targets in real time&mdash;numbers, legal structure, hydrological data, exit scenarios&mdash;so you see how the frameworks apply to actual deals, not hypothetical case studies.</p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white" style="background:#4a4238; min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: The difference between a clean close and a 5-year legal liability.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">Water Rights Law&mdash;Demystified by Operators Who Use It</h3>
-              <p class="text-sm opacity-80 leading-relaxed">Prior appropriation, riparian rights, adjudicated systems, permitting timelines. Our attorneys break this down in plain language with direct application to active markets.</p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white gradient-shift" style="background: linear-gradient(135deg, #3d372e, #4a4238, #3d372e); min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: While others wait for the Forbes headline, you&rsquo;re already positioned.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">Curated Market Intelligence&mdash;Before the Broader Market Catches On</h3>
-              <p class="text-sm opacity-80 leading-relaxed">Our team scans jurisdictions, water basins, land corridors, and legislative shifts for asymmetric opportunities&mdash;then delivers the signal without the noise.</p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white" style="background:#4a4238; min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: Getting in is half the equation. Getting out with profit is the one that matters.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">De-Risking Frameworks &amp; Exit Strategy</h3>
-              <p class="text-sm opacity-80 leading-relaxed">We show you how to structure acquisitions to minimize exposure and maximize exit value&mdash;whether your timeline is 3 years or 30.</p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-slide p-4">
-          <div class="flex flex-col justify-center p-8 md:p-10 text-white gradient-shift" style="background: linear-gradient(135deg, #3d372e, #4a4238, #3d372e); min-height:280px;">
-            <div>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-2">Translation: The best deals never hit the public market. Get offered here first.</p>
-              <h3 class="text-xl md:text-2xl serif-font mb-3">Priority Access to Member-Led Deal Syndications</h3>
-              <p class="text-sm opacity-80 leading-relaxed">When members bring opportunities to the network, you get first look before they&rsquo;re opened to anyone outside the group.</p>
-            </div>
-          </div>
+        <div class="bg-white/40 p-5">
+          <span class="text-ln-tan text-lg serif-font block mb-1">03</span>
+          <h3 class="text-xs font-bold uppercase tracking-widest mb-1">The Best Deals Don&rsquo;t Hit the Internet</h3>
+          <p class="text-xs text-ln-brown/70 leading-relaxed">Zillow and Auction.com are where retail buyers find scraps. The real inventory moves through operator networks &mdash; family offices, attorneys, ranchers selling off parcels, water rights unbundling opportunities. That&rsquo;s the feed we built.</p>
         </div>
       </div>
     </div>
-    <button class="carousel-btn carousel-btn-prev" id="carouselPrev" aria-label="Previous">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-    </button>
-    <button class="carousel-btn carousel-btn-next" id="carouselNext" aria-label="Next">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-    </button>
   </div>
 </section>
 
-<section class="py-24 px-6 md:px-20 bg-ln-brown text-ln-cream" id="profile">
-  <div class="max-w-5xl mx-auto">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-cream/20 p-2 uppercase tracking-[0.3em] text-[10px] text-ln-cream/70">Who This Is For</div>
+<section class="py-24 px-6 md:px-20 bg-white overflow-hidden" id="feed">
+  <div class="max-w-5xl mx-auto text-center mb-14 reveal">
+    <h2 class="text-3xl md:text-5xl serif-font max-w-3xl mx-auto leading-tight">The Feed in Plain English</h2>
+    <p class="text-sm text-ln-brown/60 max-w-xl mx-auto mt-4 reveal delay-1">Every day, our network surfaces land and water positions that fit one of four categories. You pick the type that matches your goals and capital.</p>
+  </div>
+  <div class="max-w-4xl mx-auto reveal delay-2">
+    <div class="grid grid-cols-3 gap-px bg-ln-brown/10 text-sm">
+      <div class="bg-white p-4 text-[10px] uppercase tracking-[0.15em] text-ln-tan font-medium">Type</div>
+      <div class="bg-white p-4 text-[10px] uppercase tracking-[0.15em] text-ln-tan font-medium">What it means</div>
+      <div class="bg-white p-4 text-[10px] uppercase tracking-[0.15em] text-ln-tan font-medium">Who it&rsquo;s for</div>
+      <div class="bg-ln-cream/40 p-4 text-xs font-bold text-ln-brown">Market Land</div>
+      <div class="bg-ln-cream/40 p-4 text-xs text-ln-brown/70">Standard rural land, access, utilities, comp-able</div>
+      <div class="bg-ln-cream/40 p-4 text-xs text-ln-brown/70">First-time flippers, homesteaders</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs font-bold text-ln-brown">Recreational Land</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Mountain, lake, ranch &mdash; lifestyle value over cash flow</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Homesteaders, lifestyle buyers</div>
+      <div class="bg-ln-cream/40 p-4 border-t border-ln-brown/10 text-xs font-bold text-ln-brown">Agricultural Land</div>
+      <div class="bg-ln-cream/40 p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Irrigated, tillable, water rights attached</div>
+      <div class="bg-ln-cream/40 p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Farmers, ranchers, income buyers</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs font-bold text-ln-brown">Mitigation / Water Rights</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Wetland credits, senior appropriative rights, basin positions</div>
+      <div class="bg-white p-4 border-t border-ln-brown/10 text-xs text-ln-brown/70">Advanced operators, family offices</div>
     </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mb-12 reveal">Built for a Specific Profile.</h2>
-    <div class="grid md:grid-cols-2 gap-10 reveal delay-1">
-      <div>
-        <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-4">You&rsquo;re the right fit if:</p>
-        <ul class="space-y-4 text-sm text-ln-cream/80">
-          <li class="flex items-start gap-3"><span class="text-ln-tan mt-0.5 flex-shrink-0">✓</span> You&rsquo;re an accredited investor actively building or expanding a real asset portfolio.</li>
-          <li class="flex items-start gap-3"><span class="text-ln-tan mt-0.5 flex-shrink-0">✓</span> You understand that real wealth is built through access and information asymmetry&mdash;not public platforms.</li>
-          <li class="flex items-start gap-3"><span class="text-ln-tan mt-0.5 flex-shrink-0">✓</span> You&rsquo;re ready to move on land and water rights but need the frameworks, legal context, and deal flow to do it intelligently.</li>
-          <li class="flex items-start gap-3"><span class="text-ln-tan mt-0.5 flex-shrink-0">✓</span> You&rsquo;re done consuming content and ready to invest in capability.</li>
-        </ul>
+    <p class="text-xs text-ln-brown/50 text-center mt-6">We don&rsquo;t tell you what to buy. We hand you the inventory and the framework to decide.</p>
+  </div>
+</section>
+
+<section class="py-24 px-6 md:px-20 bg-ln-brown text-ln-cream" id="prelaunch">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <div class="inline-block border border-ln-tan/30 px-4 py-2 text-[10px] uppercase tracking-[0.25em] text-ln-tan mb-6">Pre-Launch</div>
+    <h2 class="text-3xl md:text-5xl serif-font leading-tight mb-6">July 1, 2026</h2>
+    <p class="text-sm text-ln-cream/70 max-w-xl mx-auto leading-relaxed">We&rsquo;re not live yet. But the feed is warming up.</p>
+    <p class="text-sm text-ln-cream/70 max-w-xl mx-auto leading-relaxed mt-4"><span class="text-ln-tan font-bold">1,000+ people</span> have already submitted applications and shown serious interest during our pre-launch phase. On <span class="text-ln-tan font-bold">July 1</span>, the feed goes live &mdash; and the first wave of deals drops.</p>
+    <div class="grid md:grid-cols-3 gap-6 mt-10 text-left max-w-3xl mx-auto reveal delay-2">
+      <div class="border border-ln-cream/10 p-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-ln-tan mb-2">Early E-Books</h3>
+        <p class="text-xs text-ln-cream/60">You get the full e-book library early &mdash; start learning the frameworks before the feed opens.</p>
       </div>
-      <div>
-        <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mb-4">Not the right fit if:</p>
-        <ul class="space-y-4 text-sm text-ln-cream/50">
-          <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5 flex-shrink-0">✗</span> You&rsquo;re looking for a passive income shortcut.</li>
-          <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5 flex-shrink-0">✗</span> You want a get-rich-quick formula.</li>
-          <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5 flex-shrink-0">✗</span> You plan to lurk without contributing.</li>
-          <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5 flex-shrink-0">✗</span> You&rsquo;re not yet ready to commit capital or active participation.</li>
-        </ul>
+      <div class="border border-ln-cream/10 p-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-ln-tan mb-2">First in Line</h3>
+        <p class="text-xs text-ln-cream/60">When the feed opens, pre-launch members get first access to every deal that drops.</p>
+      </div>
+      <div class="border border-ln-cream/10 p-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-ln-tan mb-2">Shape the Community</h3>
+        <p class="text-xs text-ln-cream/60">Tell us what tools, playbooks, and expert sessions you want. We build around you.</p>
+      </div>
+    </div>
+    <a href="#membership" class="inline-block mt-10 border border-ln-tan/30 text-ln-tan px-8 py-3 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-ln-tan/10 transition-all">Get In Before Launch →</a>
+  </div>
+</section>
+
+<section class="py-24 px-6 md:px-20 bg-ln-cream text-ln-brown" id="profile">
+  <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-10 items-center">
+    <div class="w-full md:w-3/5">
+      <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mb-10 reveal">We&rsquo;re Looking for Exactly Five Kinds of People</h2>
+      <div class="space-y-4 reveal delay-1">
+        <div class="bg-white/50 p-5 flex items-start gap-4">
+          <span class="text-ln-tan text-lg serif-font flex-shrink-0 mt-0.5">01</span>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Bootstrappers &amp; First-Time Flippers</h3>
+            <p class="text-xs text-ln-brown/60 leading-relaxed">You have $10K&ndash;$50K in capital and zero deals under your belt. You need the inventory and the framework to make your first move.</p>
+          </div>
+        </div>
+        <div class="bg-white/50 p-5 flex items-start gap-4">
+          <span class="text-ln-tan text-lg serif-font flex-shrink-0 mt-0.5">02</span>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Homesteaders &amp; Lifestyle Buyers</h3>
+            <p class="text-xs text-ln-brown/60 leading-relaxed">You want land with water. Not a speculative flip &mdash; a place to build, grow, and anchor your family. You need to know the parcel has wet water before you bid.</p>
+          </div>
+        </div>
+        <div class="bg-white/50 p-5 flex items-start gap-4">
+          <span class="text-ln-tan text-lg serif-font flex-shrink-0 mt-0.5">03</span>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Farmers, Ranchers &amp; Income Buyers</h3>
+            <p class="text-xs text-ln-brown/60 leading-relaxed">Water rights and land are your core business. You need off-market irrigated tracts and leaseback structures that preserve beneficial use.</p>
+          </div>
+        </div>
+        <div class="bg-white/50 p-5 flex items-start gap-4">
+          <span class="text-ln-tan text-lg serif-font flex-shrink-0 mt-0.5">04</span>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Family Offices &amp; Capital Allocators</h3>
+            <p class="text-xs text-ln-brown/60 leading-relaxed">You manage institutional or family capital and need hard-asset exposure. You want basin intelligence, JV partners, and syndication-ready deals.</p>
+          </div>
+        </div>
+        <div class="bg-white/50 p-5 flex items-start gap-4">
+          <span class="text-ln-tan text-lg serif-font flex-shrink-0 mt-0.5">05</span>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-widest mb-1">Mariners, Backcountry Operators &amp; Self-Reliance Investors</h3>
+            <p class="text-xs text-ln-brown/60 leading-relaxed">You already live outside the standard grid. Land and water are the only assets that can&rsquo;t be printed, hacked, deplatformed, or diluted.</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-[10px] uppercase tracking-[0.2em] text-ln-tan mt-8 reveal delay-2">If none of these fit, the feed probably isn&rsquo;t for you. No hard feelings.</p>
+    </div>
+    <div class="w-full md:w-2/5 reveal-left delay-1">
+      <div class="relative overflow-hidden">
+        <video autoplay muted loop playsinline class="w-full h-[300px] md:h-[450px] object-cover" poster="building-construction.png" src="building-construction.mp4"></video>
+        <div class="absolute inset-0 border border-ln-brown/10 pointer-events-none"></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="py-24 px-6 md:px-20 bg-ln-cream" id="proof">
-  <div class="max-w-4xl mx-auto">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">Proof</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight max-w-3xl mb-12 reveal">Members Don&rsquo;t Stay for the Content. They Stay for the Network.</h2>
-    <div class="grid md:grid-cols-2 gap-6 reveal delay-1">
-      <div class="bg-white/40 p-6 text-center">
-        <span class="text-3xl md:text-4xl serif-font text-ln-tan block">127</span>
-        <p class="text-xs text-ln-brown/50 uppercase tracking-[0.2em] mt-1">Members Across 22 States</p>
-      </div>
-      <div class="bg-white/40 p-6 text-center">
-        <span class="text-3xl md:text-4xl serif-font text-ln-tan block">$4.2M+</span>
-        <p class="text-xs text-ln-brown/50 uppercase tracking-[0.2em] mt-1">Q2 2026 Member-Led Syndications</p>
-      </div>
-    </div>
-    <div class="space-y-6 mt-12 reveal delay-2">
-      <div class="border-l-2 border-ln-tan pl-6">
-        <p class="text-sm text-ln-brown/80 italic leading-relaxed">&ldquo;The deal flow alone paid for my membership 10x in the first 90 days. But the operators I met in this network are what made the difference.&rdquo;</p>
-        <p class="text-xs text-ln-brown/50 mt-2">&mdash; [Name], [State]</p>
-      </div>
-      <div class="border-l-2 border-ln-tan pl-6">
-        <p class="text-sm text-ln-brown/80 italic leading-relaxed">&ldquo;I&rsquo;d been studying water rights for 2 years before joining. What I learned in the first month would have saved me $80k in a bad deal I was about to close.&rdquo;</p>
-        <p class="text-xs text-ln-brown/50 mt-2">&mdash; [Name], [Title]</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="py-20 px-6 md:px-20 bg-ln-brown text-ln-cream relative overflow-hidden" id="urgency">
-  <div class="max-w-4xl mx-auto text-center relative z-10">
-    <div class="flex justify-center mb-8 reveal">
-      <div class="border border-ln-cream/20 p-2 uppercase tracking-[0.3em] text-[10px] text-ln-cream/70">Limited Membership</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font leading-tight mb-8 reveal">Membership Is Limited. Intentionally.</h2>
-    <div class="text-sm text-ln-cream/80 leading-relaxed max-w-2xl mx-auto space-y-4 reveal delay-1">
-      <p>We keep this community small for three reasons:</p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-6 mt-10 reveal delay-2">
-      <div class="border border-ln-cream/10 p-6 text-left">
-        <h3 class="text-sm font-bold uppercase tracking-widest mb-2">Network Quality</h3>
-        <p class="text-xs text-ln-cream/60 leading-relaxed">Every new member changes the environment. We protect the standard.</p>
-      </div>
-      <div class="border border-ln-cream/10 p-6 text-left">
-        <h3 class="text-sm font-bold uppercase tracking-widest mb-2">Finite Deal Flow</h3>
-        <p class="text-xs text-ln-cream/60 leading-relaxed">Opportunities can only be distributed to so many before the asymmetric advantage erodes.</p>
-      </div>
-      <div class="border border-ln-cream/10 p-6 text-left">
-        <h3 class="text-sm font-bold uppercase tracking-widest mb-2">Confidentiality</h3>
-        <p class="text-xs text-ln-cream/60 leading-relaxed">Smaller groups maintain higher discretion. What gets discussed stays here.</p>
-      </div>
-    </div>
-    <div class="mt-10 p-6 border border-ln-tan/30 inline-block text-left reveal delay-3">
-      <p class="text-xs text-ln-cream/70">Current capacity: <span class="text-ln-tan font-bold">[X]</span> members &bull; Waitlist: <span class="text-ln-tan font-bold">[Y]</span></p>
-      <p class="text-xs text-ln-cream/50 mt-1">Next cohort opens: <span class="text-ln-cream/80">[Date]</span> &bull; Application deadline: <span class="text-ln-cream/80">[Date]</span></p>
-    </div>
-  </div>
-  <div class="absolute left-[-10%] top-1/2 w-1/3 opacity-5 pointer-events-none">
-    <h2 class="text-[16vw] font-bold tracking-tighter uppercase leading-none -rotate-12">LIMITED</h2>
-  </div>
-</section>
-
-<section class="py-24 px-6 md:px-20 bg-ln-cream" id="membership">
-  <div class="max-w-4xl mx-auto text-center mb-12 reveal">
-    <div class="flex justify-center mb-8">
-      <div class="border border-ln-brown/20 p-2 uppercase tracking-[0.3em] text-[10px]">Apply for Membership</div>
-    </div>
-    <h2 class="text-3xl md:text-5xl serif-font mb-4 max-w-3xl mx-auto leading-tight">The Question Isn&rsquo;t Whether These Assets Matter. It&rsquo;s Whether You Have the Right Infrastructure to Move on Them.</h2>
-    <p class="text-ln-brown/60 text-sm max-w-lg mx-auto">If you&rsquo;re ready to operate at this level, we want to hear from you.</p>
+<section class="py-24 px-6 md:px-20 bg-white" id="membership">
+  <div class="max-w-5xl mx-auto text-center mb-12 reveal">
+    <h2 class="text-3xl md:text-5xl serif-font mb-4 max-w-3xl mx-auto leading-tight">Show Up, Pay $3, Get Access. That&rsquo;s It.</h2>
+    <p class="text-ln-brown/60 text-sm max-w-lg mx-auto">You&rsquo;re in. No application review. No &ldquo;we&rsquo;ll review your profile.&rdquo; No sales calls. Click below, fill this out, and we&rsquo;ll send you the link.</p>
   </div>
 
-  <div class="max-w-lg mx-auto reveal">
-    <div class="bg-ln-light-tan/40 p-8">
-      <form id="entry-form" class="space-y-4">
+  <div class="flex flex-col md:flex-row max-w-5xl mx-auto gap-8 md:gap-12 items-start">
+    <div class="w-full md:w-1/2 reveal">
+      <div class="bg-ln-light-tan/40 p-8">
+        <form id="entry-form" class="space-y-4">
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label for="entry-name" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Full Name</label>
+              <input type="text" id="entry-name" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="Your full name"/>
+            </div>
+            <div>
+              <label for="entry-email" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Email Address</label>
+              <input type="email" id="entry-email" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="you@example.com"/>
+            </div>
+            <div>
+              <label for="entry-phone" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Phone Number</label>
+              <input type="tel" id="entry-phone" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="+1 (555) 000-0000"/>
+            </div>
+            <div>
+              <label for="entry-location" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Location</label>
+              <input type="text" id="entry-location" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="City, State / Country"/>
+            </div>
+          </div>
+          <div>
+            <label for="entry-company" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Company / Role</label>
+            <input type="text" id="entry-company" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="Your company or professional role"/>
+          </div>
+          <div>
+            <label for="entry-experience" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Investment Experience</label>
+            <select id="entry-experience" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors">
+              <option value="">Select your experience level</option>
+              <option value="accredited">Accredited investor — active in real assets</option>
+              <option value="experienced">Experienced investor — new to land/water</option>
+              <option value="intermediate">Some exposure — looking to scale</option>
+              <option value="beginner">New to investing — building knowledge</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="entry-investment" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Investment Range</label>
+            <select id="entry-investment" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors">
+              <option value="">Select range</option>
+              <option value="under-100k">Under $100K</option>
+              <option value="100k-500k">$100K – $500K</option>
+              <option value="500k-1m">$500K – $1M</option>
+              <option value="1m-5m">$1M – $5M</option>
+              <option value="5m-plus">$5M+</option>
+            </select>
+          </div>
+          <div>
+            <label for="entry-referral" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">How Did You Hear?</label>
+            <input type="text" id="entry-referral" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="Referral source"/>
+          </div>
+        </div>
         <div>
-          <label for="entry-name" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Full Name</label>
-          <input type="text" id="entry-name" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="Your full name"/>
-        </div>
-        <div>
-          <label for="entry-email" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Email Address</label>
-          <input type="email" id="entry-email" required class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors" placeholder="you@example.com"/>
-        </div>
-        <div>
-          <label for="entry-experience" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Investment Experience</label>
-          <select id="entry-experience" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors">
-            <option value="">Select your experience level</option>
-            <option value="accredited">Accredited investor — active in real assets</option>
-            <option value="experienced">Experienced investor — new to land/water</option>
-            <option value="intermediate">Some exposure — looking to scale</option>
-            <option value="beginner">New to investing — building knowledge</option>
-          </select>
+          <label for="entry-message" class="text-[10px] uppercase tracking-[0.2em] text-ln-brown/50 block mb-1">Message (Optional)</label>
+          <textarea id="entry-message" rows="3" class="w-full bg-white/60 border border-ln-brown/20 px-4 py-3 text-sm text-ln-brown outline-none focus:border-ln-tan transition-colors resize-none" placeholder="Tell us about your background and what you're looking to accomplish..."></textarea>
         </div>
         <button type="submit" id="entry-submit" class="w-full bg-ln-brown text-white py-4 text-[10px] uppercase tracking-[0.2em] font-medium hover:bg-ln-dark-tan transition-all">
-          Apply for Membership
+          Get Access Now &mdash; $3
         </button>
-        <div id="entry-message" class="text-center text-xs mt-2 hidden"></div>
+        <div id="entry-result" class="text-center text-xs mt-2 hidden"></div>
       </form>
     </div>
-    <p class="text-center text-[10px] uppercase tracking-[0.2em] text-ln-brown/30 mt-4 max-w-sm mx-auto leading-relaxed">We screen for fit, not just funding. Serious investors. Real assets. Exclusive access.</p>
+    <p class="text-center text-[10px] uppercase tracking-[0.2em] text-ln-brown/40 mt-3 max-w-sm mx-auto leading-relaxed">$3 one-time entry. No recurring fees. No upsells.</p>
   </div>
+  <div class="w-full md:w-1/2 hidden md:block">
+    <div class="relative overflow-hidden h-full min-h-[400px]">
+      <video autoplay muted loop playsinline class="w-full h-full object-cover absolute inset-0" poster="building-drone-shot.png" src="building-drone-shot.mp4"></video>
+      <div class="absolute inset-0 border border-ln-brown/10 pointer-events-none"></div>
+    </div>
+  </div>
+</div>
 </section>
 
-<section class="py-24 px-6 md:px-20 bg-ln-cream" id="faq">
-  <div class="max-w-3xl mx-auto reveal">
-    <div class="text-center mb-16">
-      <div class="inline-flex items-center justify-center gap-3 border border-ln-brown/20 px-4 py-2 mb-6">
-        <span class="text-[10px] uppercase tracking-[0.3em]">FAQ</span>
-      </div>
-      <h2 class="text-3xl md:text-4xl serif-font">Common Questions.</h2>
+<footer class="ln-footer">
+  <div class="ln-footer-inner">
+    <div class="ln-footer-left">
+      <ul class="ln-footer-nav">
+        <li><a href="index.html">Start</a></li>
+        <li><a href="#what-you-get">What You Get</a></li>
+        <li><a href="#ascension">Ascension</a></li>
+        <li><a href="#feed">The Feed</a></li>
+        <li><a href="#membership">Membership</a></li>
+        <li><a href="#profile">Who This Is For</a></li>
+        <li><a href="mailto:foreignaffairsllc2017@gmail.com">Contact</a></li>
+      </ul>
     </div>
-    <div class="space-y-6">
-      <details class="group border-b border-ln-brown/10 pb-6">
-        <summary class="flex justify-between items-center cursor-pointer text-sm font-medium py-2 marker:hidden list-none">
-          <span>Is this a course?</span>
-          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-        </summary>
-        <p class="text-xs text-ln-brown/70 mt-3 leading-relaxed">No. This is an active professional community centered around deal flow, live analysis, expert sessions, and collaborative execution. You don&rsquo;t watch content&mdash;you participate in transactions.</p>
-      </details>
-      <details class="group border-b border-ln-brown/10 pb-6">
-        <summary class="flex justify-between items-center cursor-pointer text-sm font-medium py-2 marker:hidden list-none">
-          <span>What if I&rsquo;m new to land and water investing?</span>
-          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-        </summary>
-        <p class="text-xs text-ln-brown/70 mt-3 leading-relaxed">You don&rsquo;t need to be a seasoned operator to join, but you do need to be ready to commit capital and participate actively. The frameworks and mentorship are designed to compress your learning curve&mdash;but we don&rsquo;t replace the need for engagement.</p>
-      </details>
-      <details class="group border-b border-ln-brown/10 pb-6">
-        <summary class="flex justify-between items-center cursor-pointer text-sm font-medium py-2 marker:hidden list-none">
-          <span>What&rsquo;s the minimum investment?</span>
-          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-        </summary>
-        <p class="text-xs text-ln-brown/70 mt-3 leading-relaxed">There&rsquo;s no minimum to join the network. Syndicated deal minimums vary by opportunity. Most range from $5k&ndash;$50k depending on the asset and structure.</p>
-      </details>
-      <details class="group border-b border-ln-brown/10 pb-6">
-        <summary class="flex justify-between items-center cursor-pointer text-sm font-medium py-2 marker:hidden list-none">
-          <span>Can I bring my team?</span>
-          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-        </summary>
-        <p class="text-xs text-ln-brown/70 mt-3 leading-relaxed">Yes. Members can add team members under their membership. Each additional seat requires approval to maintain network quality.</p>
-      </details>
-      <details class="group border-b border-ln-brown/10 pb-6">
-        <summary class="flex justify-between items-center cursor-pointer text-sm font-medium py-2 marker:hidden list-none">
-          <span>What happens after I apply?</span>
-          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-        </summary>
-        <p class="text-xs text-ln-brown/70 mt-3 leading-relaxed">Our team reviews your application within 48 hours. If accepted, you&rsquo;ll receive onboarding instructions and access to the private community where you can begin participating immediately.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<footer class="bg-ln-brown text-ln-cream pt-24 pb-0 relative overflow-hidden">
-  <div class="px-6 md:px-20 relative z-10">
-    <div class="flex flex-col lg:flex-row justify-between gap-16 mb-12">
-      <div class="lg:w-2/3">
-        <ul class="space-y-4 text-xl md:text-2xl lg:text-3xl serif-font">
-          <li><a href="index.html" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Home</a></li>
-          <li><a href="#agenda" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">The Agenda</a></li>
-          <li><a href="#benefits" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Benefits</a></li>
-          <li><a href="#profile" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Who This Is For</a></li>
-          <li><a href="#membership" class="hover:italic hover:pl-6 hover:text-ln-tan transition-all inline-block">Apply</a></li>
-        </ul>
-        <p class="text-xs opacity-50 mt-8 max-w-md">Private Professional Community. Land &amp; Water Rights &bull; Strategic Acquisitions &bull; Investment &bull; Education.</p>
+    <div class="ln-footer-right">
+      <div></div>
+      <div class="ln-footer-email">
+        <a href="mailto:foreignaffairsllc2017@gmail.com" aria-label="Email">
+          <svg fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
-      <div class="lg:w-1/4 flex flex-col justify-between">
-        <div class="flex gap-4 mb-10">
-          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="LinkedIn"><span class="text-xs font-bold">in</span></a>
-          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="X"><span class="text-xs font-bold">x</span></a>
-          <a class="w-10 h-10 rounded-full border border-ln-cream/30 flex items-center justify-center hover:bg-ln-cream hover:text-ln-brown transition-all" href="#" aria-label="Instagram"><span class="text-xs font-bold">ig</span></a>
-        </div>
-        <div class="space-y-2 text-xs opacity-60">
-          <p><a class="hover:opacity-100" href="terms.html">Terms of Service</a></p>
-          <p><a class="hover:opacity-100" href="privacy.html">Privacy Policy</a></p>
-          <p><a class="hover:opacity-100" href="mailto:foreignaffairsllc2017@gmail.com">Contact</a></p>
-          <div class="pt-6"><p>&copy; 2026. All Rights Reserved.</p></div>
-        </div>
+      <div class="ln-footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="mailto:foreignaffairsllc2017@gmail.com">Contact</a>
+        <a href="mailto:foreignaffairsllc2017@gmail.com">Support</a>
+        <span class="ln-footer-attr">&copy; 2026 LandNow. All rights reserved.</span>
       </div>
     </div>
   </div>
-  <div class="w-full overflow-hidden pb-0 -mb-[2px] leading-none select-none pointer-events-none">
-    <h2 class="text-[13vw] md:text-[14vw] lg:text-[14vw] font-bold tracking-tighter opacity-10 uppercase text-center whitespace-nowrap leading-[0.7] select-none">LANDNOW</h2>
-  </div>
-  <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-auto max-w-[90vw]">
-    <div class="bg-ln-brown/90 backdrop-blur-xl border border-white/20 text-white px-6 py-3 flex items-center gap-4 shadow-2xl">
-      <span class="text-[10px] whitespace-nowrap">This site uses cookies.</span>
-      <button onclick="document.getElementById('cookie-banner').remove()" class="bg-white text-ln-brown px-4 py-1.5 text-[10px] font-bold">Ok</button>
-    </div>
+  <div class="ln-footer-wordmark">
+    <h2>LANDNOW</h2>
   </div>
 </footer>
+
+<div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-auto max-w-[90vw] hidden">
+  <div class="backdrop-blur-xl text-white px-6 py-4 flex flex-col sm:flex-row items-center gap-4 shadow-2xl" style="background: rgba(8, 18, 15, 0.9); border: 1px solid rgba(199, 163, 122, 0.15);">
+    <span class="text-[10px] text-center sm:text-left leading-relaxed" style="color: rgba(199, 163, 122, 0.6);">This site uses functional cookies only. By continuing, you accept our <a href="privacy.html" class="underline" style="color: rgba(199, 163, 122, 0.8);">Privacy Policy</a> and <a href="cookie-policy.html" class="underline" style="color: rgba(199, 163, 122, 0.8);">Cookie Policy</a>.</span>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button id="cookie-reject" class="px-4 py-1.5 text-[10px] font-bold" style="background: transparent; color: rgba(199, 163, 122, 0.6); border: 1px solid rgba(199, 163, 122, 0.2);">Reject</button>
+      <button id="cookie-accept" class="px-4 py-1.5 text-[10px] font-bold" style="background: #C7A37A; color: #08120F;">Accept</button>
+    </div>
+  </div>
+</div>
 
 </div>
 
 <script>
   (function() {
-    const video = document.querySelector('#splash video');
-    const splash = document.getElementById('splash');
-    const loader = document.getElementById('loader');
-    const site = document.getElementById('site');
+    // Cookie consent
+    var cookieConsent = localStorage.getItem('ln_cookie_consent');
+    if (!cookieConsent) {
+      var banner = document.getElementById('cookie-banner');
+      if (banner) banner.classList.remove('hidden');
+    }
+    document.getElementById('cookie-accept')?.addEventListener('click', function() {
+      localStorage.setItem('ln_cookie_consent', 'accepted');
+      document.getElementById('cookie-banner').classList.add('hidden');
+    });
+    document.getElementById('cookie-reject')?.addEventListener('click', function() {
+      localStorage.setItem('ln_cookie_consent', 'rejected');
+      document.getElementById('cookie-banner').classList.add('hidden');
+    });
+  })();
+
+  (function() {
+    var video = document.querySelector('#splash video');
+    var splash = document.getElementById('splash');
+    var loader = document.getElementById('loader');
+    var site = document.getElementById('site');
+    var splashLoader = document.getElementById('splashLoader');
 
     function showSite() {
       splash.classList.add('hidden');
+      loader.classList.add('hidden');
       site.classList.add('visible');
       initReveal();
-      initCarousel();
     }
 
     function initReveal() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
           if (entry.isIntersecting) entry.target.classList.add('is-visible');
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-      document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function(el) { observer.observe(el); });
     }
 
-    const FALLBACK_MS = 4000;
-
-    function onVideoEnded() {
-      sessionStorage.setItem('ln_intro_played', '1');
-      showSite();
+    function onReady(fn) {
+      var posters = document.querySelectorAll('video[poster]');
+      var images = [];
+      posters.forEach(function(v) {
+        var src = v.getAttribute('poster');
+        if (src) images.push(src);
+      });
+      if (images.length === 0) { fn(); return; }
+      var loaded = 0;
+      images.forEach(function(src) {
+        var img = new Image();
+        img.onload = img.onerror = function() {
+          loaded++;
+          if (loaded >= images.length) fn();
+        };
+        img.src = src;
+      });
     }
 
     if (sessionStorage.getItem('ln_intro_played')) {
-      loader.style.display = 'none';
-      showSite();
+      splash.style.display = 'none';
+      onReady(showSite);
+      return;
+    }
+
+    function enterSite() {
+      splash.removeEventListener('click', enterSite);
+      splash.removeEventListener('touchstart', enterSite);
+      sessionStorage.setItem('ln_intro_played', '1');
+      onReady(showSite);
+    }
+
+    splash.addEventListener('click', enterSite);
+    splash.addEventListener('touchstart', enterSite);
+
+    video.addEventListener('ended', enterSite);
+    video.addEventListener('error', enterSite);
+
+    var videoStarted = false;
+    var siteRevealed = false;
+
+    function revealSite() {
+      if (siteRevealed) return;
+      siteRevealed = true;
+      enterSite();
+    }
+
+    var loadTimer = setTimeout(function() {
+      if (!videoStarted) revealSite();
+    }, 30000);
+
+    function startVideo() {
+      if (videoStarted) return;
+      videoStarted = true;
+      clearInterval(readyTimer);
+      clearTimeout(loadTimer);
+      video.playbackRate = 1.0;
+      video.play().then(function() {
+        if (splashLoader) splashLoader.classList.add('hidden');
+      }).catch(function() {
+        revealSite();
+      });
+    }
+
+    if (video.readyState >= 3) {
+      startVideo();
     } else {
-      const fallbackTimer = setTimeout(showSite, FALLBACK_MS);
-      video.addEventListener('ended', () => { clearTimeout(fallbackTimer); onVideoEnded(); });
-      video.addEventListener('error', () => { clearTimeout(fallbackTimer); showSite(); });
-      setTimeout(() => loader.classList.add('hidden'), 2000);
+      video.addEventListener('canplaythrough', startVideo, { once: true });
+      video.load();
+    }
 
-      let started = false;
-      const startVideo = () => {
-        if (started) return;
-        started = true;
-        video.playbackRate = 1.3;
-        video.play().catch(() => showSite());
-      };
-
-      video.addEventListener('canplay', startVideo, { once: true });
-      video.addEventListener('loadeddata', startVideo, { once: true });
-
+    var readyTimer = setInterval(function() {
       if (video.readyState >= 3) {
         startVideo();
       }
-    }
+    }, 300);
+
+    setTimeout(function() { clearInterval(readyTimer); }, 25000);
   })();
-
-  function initCarousel() {
-    const track = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
-    if (!track) return;
-
-    const slides = track.querySelectorAll('.carousel-slide');
-    const total = slides.length;
-    let current = 0;
-    let autoplayTimer = null;
-    const AUTOPLAY_DELAY = 5000;
-
-    function goTo(index) {
-      current = index;
-      track.style.transform = `translateX(-${current * 100}%)`;
-      resetAutoplay();
-    }
-
-    function next() { goTo((current + 1) % total); }
-    function prev() { goTo((current - 1 + total) % total); }
-
-    function resetAutoplay() {
-      if (autoplayTimer) clearInterval(autoplayTimer);
-      autoplayTimer = setInterval(next, AUTOPLAY_DELAY);
-    }
-
-    prevBtn.addEventListener('click', prev);
-    nextBtn.addEventListener('click', next);
-
-    const carousel = track.parentElement.parentElement;
-    carousel.addEventListener('mouseenter', () => { if (autoplayTimer) clearInterval(autoplayTimer); });
-    carousel.addEventListener('mouseleave', resetAutoplay);
-
-    goTo(0);
-  }
 
   (function() {
     const form = document.getElementById('entry-form');
     const submitBtn = document.getElementById('entry-submit');
-    const msg = document.getElementById('entry-message');
+    const result = document.getElementById('entry-result');
 
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting...';
-        msg.classList.add('hidden');
+        result.classList.add('hidden');
 
-        const name = document.getElementById('entry-name').value.trim();
-        const email = document.getElementById('entry-email').value.trim();
-        const experience = document.getElementById('entry-experience')?.value || '';
+        const payload = {
+          name: document.getElementById('entry-name').value.trim(),
+          email: document.getElementById('entry-email').value.trim(),
+          phone: document.getElementById('entry-phone').value.trim(),
+          location: document.getElementById('entry-location').value.trim(),
+          company: document.getElementById('entry-company').value.trim(),
+          experience: document.getElementById('entry-experience')?.value || '',
+          investmentRange: document.getElementById('entry-investment')?.value || '',
+          referral: document.getElementById('entry-referral').value.trim(),
+          message: document.getElementById('entry-message').value.trim()
+        };
 
         try {
           const res = await fetch('/api/submit-entry', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, experience })
+            body: JSON.stringify(payload)
           });
           const data = await res.json();
-
-          if (data.error) {
-            msg.textContent = data.error;
-            msg.classList.remove('hidden');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Apply for Membership';
-            return;
+          if (data.success) {
+            result.className = 'text-center text-xs mt-4 text-green-700';
+            result.textContent = 'You\'re in. Check your email for the link to the network.';
+            form.reset();
+          } else {
+            result.className = 'text-center text-xs mt-4 text-red-600';
+            result.textContent = data.error || 'Something went wrong. Please try again.';
           }
-
-          msg.textContent = 'Application received. We\'ll be in touch within 48 hours.';
-          msg.classList.remove('hidden');
-          msg.style.color = '#b5925a';
-          submitBtn.textContent = 'Submitted';
-        } catch (err) {
-          msg.textContent = 'Unable to submit. Please try again.';
-          msg.classList.remove('hidden');
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Apply for Membership';
+        } catch {
+          result.className = 'text-center text-xs mt-4 text-red-600';
+          result.textContent = 'Network error. Please check your connection and try again.';
         }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Get Access Now — $3';
       });
     }
   })();

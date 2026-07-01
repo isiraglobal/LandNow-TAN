@@ -3,7 +3,10 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, experience } = req.body || {};
+  const {
+    name, email, phone, location, experience,
+    company, investmentRange, referral, message
+  } = req.body || {};
 
   if (!name || !email) {
     return res.status(400).json({ error: 'Name and email are required.' });
@@ -18,15 +21,21 @@ module.exports = async (req, res) => {
 
   const embed = {
     embeds: [{
-      title: 'New LandNow Entry',
+      title: 'New Membership Application',
       color: 0xb5925a,
       fields: [
         { name: 'Name', value: name, inline: true },
         { name: 'Email', value: email, inline: true },
-        { name: 'Experience', value: experience || 'Not specified', inline: true },
+        { name: 'Phone', value: phone || '—', inline: true },
+        { name: 'Location', value: location || '—', inline: true },
+        { name: 'Company / Role', value: company || '—', inline: true },
+        { name: 'Experience', value: experience || '—', inline: true },
+        { name: 'Investment Range', value: investmentRange || '—', inline: true },
+        { name: 'Referred By', value: referral || '—', inline: true },
+        { name: 'Message', value: message || '—', inline: false },
         { name: 'Submitted', value: new Date().toUTCString(), inline: false }
       ],
-      footer: { text: 'LandNow Entry Form' }
+      footer: { text: 'LandNow Applications' }
     }]
   };
 
